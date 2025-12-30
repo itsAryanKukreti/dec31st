@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Love OS – Loading…</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+/* Global reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  font-family: "SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont,
+               "Segoe UI", sans-serif;
+  overflow: hidden; /* prevent scrollbars */
+}
+
+/* Love‑themed background */
+body {
+  background: radial-gradient(circle at 10% 0%, #ffe6f2 0, #ffd6e8 25%, #ffd7f2 45%, #ffeefc 60%, #e4f4ff 80%, #fdf6ff 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Floating hearts */
+.heart-bg {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: radial-gradient(circle at 30% 30%, #fff 0, #ff8fb7 40%, #ff4b8b 70%);
+  transform: rotate(45deg);
+  border-radius: 4px;
+  opacity: 0.35;
+  animation: floatHeart 18s linear infinite;
+  pointer-events: none;
+}
+.heart-bg::before,
+.heart-bg::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: radial-gradient(circle at 30% 30%, #fff 0, #ff8fb7 40%, #ff4b8b 70%);
+  border-radius: 50%;
+}
+.heart-bg::before { top: -9px; left: 0; }
+.heart-bg::after { top: 0; left: -9px; }
+.heart-bg.h1 { top: 15%; left: 20%; animation-delay: 0s; }
+.heart-bg.h2 { top: 70%; left: 10%; animation-delay: 5s; }
+.heart-bg.h3 { top: 50%; left: 80%; animation-delay: 9s; }
+.heart-bg.h4 { top: 80%; left: 55%; animation-delay: 12s; }
+
+@keyframes floatHeart {
+  0% { transform: translateY(0) rotate(45deg); opacity: 0.35; }
+  50% { opacity: 0.7; }
+  100% { transform: translateY(-40px) rotate(45deg); opacity: 0.15; }
+}
+
+/* Loader card */
+.loader-card {
+  position: relative;
+  width: 340px;
+  max-width: 90%;
+  padding: 22px 24px 20px 24px;
+  border-radius: 26px;
+  background: rgba(255,255,255,0.96);
+  box-shadow:
+    0 20px 45px rgba(0,0,0,0.23),
+    0 0 0 1px rgba(255,255,255,0.9);
+  text-align: center;
+  z-index: 2; /* make sure it’s above hearts */
+}
+
+/* Loader text */
+.loader-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #5a2644;
+  margin-bottom: 6px;
+}
+
+.loader-sub {
+  font-size: 12px;
+  color: #875771;
+  margin-bottom: 14px;
+}
+
+.loader-sub span {
+  font-weight: 600;
+}
+
+/* Progress bar */
+.loader-bar-outer {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: #f5d7ec;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9);
+}
+
+.loader-bar-inner {
+  width: 0%;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ff86c2, #ff4b9a);
+  transition: width 0.18s ease-out;
+}
+
+.loader-percent {
+  margin-top: 6px;
+  font-size: 11px;
+  color: #7c4a67;
+}
+
+.loader-footer {
+  margin-top: 10px;
+  font-size: 11px;
+  color: #94607f;
+}
+
+/* Tiny heart icon */
+.loader-heart {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  border-radius: 8px;
+  background: radial-gradient(circle at 30% 20%, #fff, #ff7bb8, #ff4b9a);
+  margin-bottom: 8px;
+  box-shadow: 0 8px 18px rgba(255, 105, 180, 0.55);
+}
+</style>
+</head>
+<body>
+
+<!-- Floating hearts -->
+<div class="heart-bg h1"></div>
+<div class="heart-bg h2"></div>
+<div class="heart-bg h3"></div>
+<div class="heart-bg h4"></div>
+
+<!-- Loader card -->
+<div class="loader-card">
+  <div class="loader-heart"></div>
+  <div class="loader-title">Booting Love OS…</div>
+  <div class="loader-sub">
+    Preparing <span>soft hugs</span>, <span>tiny games</span>, and
+    <span>memories of you</span> 💗
+  </div>
+  <div class="loader-bar-outer">
+    <div class="loader-bar-inner" id="love-loader-bar"></div>
+  </div>
+  <div class="loader-percent" id="love-loader-percent">0%</div>
+  <div class="loader-footer">
+    This tiny OS will always choose you first.
+  </div>
+</div>
+
+<script>
+// Simple loading animation, then redirect to main.html
+document.addEventListener("DOMContentLoaded", () => {
+  const bar = document.getElementById("love-loader-bar");
+  const percentLabel = document.getElementById("love-loader-percent");
+  if (!bar || !percentLabel) return;
+
+  let progress = 0;
+  const targetDuration = 2300; // ms
+  const stepMs = 80;
+  const step = (stepMs / targetDuration) * 100;
+
+  const intervalId = setInterval(() => {
+    progress += step * (0.9 + Math.random() * 0.4);
+    if (progress >= 100) {
+      progress = 100;
+      clearInterval(intervalId);
+
+      // tiny pause before going to Love OS main page
+      setTimeout(() => {
+        window.location.href = "main.html";
+      }, 400);
+    }
+
+    bar.style.width = progress + "%";
+    percentLabel.textContent = Math.round(progress) + "%";
+  }, stepMs);
+});
+</script>
+
+</body>
+</html>

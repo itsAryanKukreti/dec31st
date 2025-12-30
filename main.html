@@ -1,0 +1,4405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Her New Year Desktop – Love OS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-gradient: radial-gradient(circle at top, #2b2138, #140b20 45%, #05040a);
+      --pink-soft: #ffb6d0;
+      --pink-strong: #ff7aa7;
+      --pink-stronger: #ff4b7b;
+      --cream: #fff5fa;
+      --lavender: #cbb8ff;
+      --mint: #b9f2df;
+      --shadow-soft: 0 18px 40px rgba(10, 0, 30, 0.75);
+      --window-bg: rgba(15, 10, 26, 0.9);
+      --border-soft: rgba(255, 190, 220, 0.45);
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: var(--bg-gradient);
+      color: #ffe9f4;
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Floating heart / star particles in background */
+
+    .floating-particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .particle {
+      position: absolute;
+      font-size: 0.9rem;
+      opacity: 0.26;
+      color: #ff9ac6;
+      animation: floatParticle linear infinite;
+    }
+
+    @keyframes floatParticle {
+      from {
+        transform: translateY(110vh) translateX(0);
+      }
+      to {
+        transform: translateY(-10vh) translateX(30px);
+      }
+    }
+
+    /* DESKTOP AREA */
+
+    .desktop {
+      position: relative;
+      width: 100vw;
+      height: calc(100vh - 50px);
+      padding: 15px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 90px);
+      grid-auto-rows: 90px;
+      align-content: flex-start;
+      justify-content: flex-start;
+      gap: 10px;
+      z-index: 1;
+    }
+
+    .desktop-icon {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      border-radius: 12px;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(4px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+    }
+
+    .desktop-icon:hover {
+      background: rgba(255, 182, 208, 0.22);
+      transform: translateY(-3px) scale(1.06);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.8);
+    }
+
+    .desktop-icon-img {
+      font-size: 2rem;
+      margin-bottom: 4px;
+    }
+
+    .desktop-icon-label {
+      font-size: 0.7rem;
+      line-height: 1.1;
+      text-shadow: 0 1px 3px #000;
+      color: #ffe4f3;
+    }
+
+    /* WINDOW / APP */
+
+    .window {
+      position: absolute;
+      top: 80px;
+      left: 160px;
+      width: min(90vw, 780px);
+      max-height: 80vh;
+      background: var(--window-bg);
+      border-radius: 18px;
+      box-shadow: var(--shadow-soft);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--border-soft);
+      transform: translateY(10px) scale(0.96);
+      opacity: 0;
+      transition: opacity 0.18s ease-out, transform 0.18s ease-out;
+      z-index: 2;
+    }
+
+    .window.active {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .window-header {
+      background: linear-gradient(90deg, #ff7aa7, #ffb8d8);
+      padding: 9px 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      color: #2c1023;
+    }
+
+    .window-title {
+      font-weight: 600;
+    }
+
+    .window-content {
+      padding: 15px 16px;
+      overflow-y: auto;
+      color: #ffe8f4;
+    }
+
+    /* 90s style title bar buttons */
+
+.window-controls {
+  display: flex;
+  gap: 2px;
+}
+
+.window-btn {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  border-radius: 0;
+  border: 2px solid #000000;          /* dark outer border */
+  background: #c0c0c0;                /* classic gray */
+  box-shadow:
+    inset 1px 1px 0 #ffffff,          /* top/left highlight */
+    inset -1px -1px 0 #808080;        /* bottom/right shadow */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  line-height: 1;
+  color: #000000;
+}
+
+.window-btn.close {
+  background: #e35f5f;                /* 95-ish red [web:72][web:78] */
+}
+
+.window-btn.min {
+  background: #dfe300;                /* 95-ish yellow/green [web:72][web:78] */
+}
+
+/* tiny 90s hover effect */
+.window-btn:hover {
+  box-shadow:
+    inset 1px 1px 0 #808080,
+    inset -1px -1px 0 #ffffff;
+}
+
+
+    .window-content h2 {
+      margin-bottom: 6px;
+    }
+
+    .window-content p {
+      margin-bottom: 8px;
+      font-size: 0.92rem;
+    }
+
+    /* GENERAL GAME / APP STYLES */
+
+    .section-box {
+      border-radius: 14px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      margin-bottom: 12px;
+      border: 1px solid rgba(255, 190, 220, 0.4);
+    }
+
+    button,
+    input,
+    textarea {
+      font-family: inherit;
+    }
+
+    button {
+      background: var(--pink-strong);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 7px 14px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+      transition: background 0.15s, transform 0.08s, box-shadow 0.15s;
+    }
+
+    button:hover {
+      background: #ff5672;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.65);
+    }
+
+    button:active {
+      transform: translateY(1px) scale(0.98);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="number"],
+    textarea {
+      border-radius: 10px;
+      border: none;
+      padding: 7px 10px;
+      font-size: 0.9rem;
+      width: 100%;
+      margin: 4px 0;
+      background: rgba(255, 255, 255, 0.07);
+      color: #fff;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    /* mini-games */
+
+    .love-notes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .note-card {
+      font-size: 1.2rem;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      background: #ff4b5c;
+      color: #fff;
+    }
+
+    .note-card.revealed {
+      font-size: 0.8rem;
+      text-align: left;
+    }
+
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 70px);
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .memory-card {
+      height: 55px;
+      border-radius: 8px;
+      border: none;
+      background: #162447;
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+
+    .quiz-options {
+      margin-top: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .quiz-options button {
+      width: 100%;
+      text-align: left;
+      background: #1f4068;
+    }
+
+    .typing-target {
+      font-style: italic;
+      margin-bottom: 5px;
+    }
+
+    .puzzle-letters {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .puzzle-letters button {
+      border-radius: 6px;
+      border: none;
+      padding: 5px 7px;
+      cursor: pointer;
+    }
+
+    .rps-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 8px 0;
+    }
+
+    .rps-buttons button {
+      background: #1f4068;
+    }
+
+    .guess-inline {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin: 6px 0;
+    }
+
+    .guess-inline input {
+      width: 80px;
+    }
+
+    .affirmation-card {
+      padding: 10px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.06);
+      margin-top: 8px;
+    }
+
+    .mood-row {
+      display: flex;
+      gap: 8px;
+      margin: 8px 0;
+    }
+
+    .mood-btn {
+      flex: 1;
+      padding: 8px 0;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.09);
+      color: #fff;
+    }
+
+    .mood-history {
+      font-size: 0.85rem;
+      margin-top: 6px;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+
+    /* Memories timeline */
+
+    .memory-item {
+      border-radius: 10px;
+      padding: 8px 10px;
+      background: rgba(255, 255, 255, 0.04);
+      margin-bottom: 8px;
+      border: 1px solid rgba(255, 190, 220, 0.35);
+    }
+
+    .memory-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #ffd8f0;
+      margin-bottom: 2px;
+    }
+
+    .memory-text {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+
+    .memory-meta {
+      font-size: 0.75rem;
+      opacity: 0.6;
+      margin-top: 3px;
+    }
+
+    /* Music player */
+
+    .player-wrapper {
+      border-radius: 14px;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.45);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.7);
+    }
+
+    .player-cover {
+      width: 70px;
+      height: 70px;
+      border-radius: 16px;
+      background: radial-gradient(circle at top, #ff9abf, #ff6fa3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin-bottom: 4px;
+    }
+
+    .player-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .player-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .player-artist {
+      font-size: 0.8rem;
+      opacity: 0.85;
+    }
+
+    .player-progress {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+    }
+
+    .player-time {
+      width: 40px;
+      text-align: center;
+    }
+
+    #player-seek {
+      flex: 1;
+      accent-color: #ff79a8;
+    }
+
+    .player-controls {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .player-controls button {
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+    }
+
+    .player-list {
+      margin-top: 8px;
+      list-style: none;
+      padding-left: 0;
+      max-height: 160px;
+      overflow-y: auto;
+      font-size: 0.82rem;
+    }
+
+    .player-list li {
+      padding: 5px 6px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+      transition: background 0.12s, transform 0.08s;
+    }
+
+    .player-list li span {
+      opacity: 0.9;
+    }
+
+    .player-list li:hover {
+      background: rgba(255, 255, 255, 0.06);
+      transform: translateX(2px);
+    }
+
+    .player-list li.active {
+      background: rgba(255, 182, 208, 0.18);
+    }
+
+    /* TASKBAR & LOVE START MENU */
+
+    .taskbar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 50px;
+      background: linear-gradient(
+        90deg,
+        rgba(10, 5, 20, 0.96),
+        rgba(18, 8, 28, 0.96)
+      );
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      z-index: 5;
+      border-top: 1px solid rgba(255, 190, 220, 0.4);
+    }
+
+    .start-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: radial-gradient(circle at top, #ff9abf, #ff6fa3);
+      color: #240918;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.8);
+      transform-origin: center;
+    }
+
+    .start-button:hover {
+      transform: translateY(-1px) scale(1.04);
+    }
+
+    .start-heart {
+      animation: breatheHeart 3s ease-in-out infinite;
+    }
+
+    @keyframes breatheHeart {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.18);
+      }
+    }
+
+    .taskbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.8rem;
+      color: #ffd6e0;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #7dffba;
+      animation: pulseDot 1.8s ease-in-out infinite;
+    }
+
+    @keyframes pulseDot {
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 0.8;
+      }
+      50% {
+        transform: scale(1.6);
+        opacity: 1;
+      }
+    }
+
+    .start-menu {
+      position: fixed;
+      bottom: 60px;
+      left: 20px;
+      width: 260px;
+      max-height: 60vh;
+      background: rgba(17, 9, 28, 0.98);
+      border-radius: 18px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+      padding: 10px 12px 12px;
+      border: 1px solid rgba(255, 190, 220, 0.5);
+      display: none;
+      flex-direction: column;
+      transform: translateY(10px) scale(0.94);
+      opacity: 0;
+      transition: opacity 0.18s ease-out, transform 0.18s ease-out;
+      z-index: 6;
+    }
+
+    .start-menu.active {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .start-menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .start-menu-header span {
+      font-size: 0.86rem;
+      color: #ffd1e6;
+    }
+
+    .start-menu-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .start-menu-list {
+      margin-top: 4px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .start-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 7px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: #ffe3f5;
+      transition: background 0.12s, transform 0.08s;
+    }
+
+    .start-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateX(2px);
+    }
+
+    .start-item-emoji {
+      width: 22px;
+      text-align: center;
+    }
+
+    .start-item-label {
+      flex: 1;
+    }
+
+    /* Mood Rescue */
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      width: min(90vw, 420px);
+      background: radial-gradient(circle at top, #ffe2ef, #ffc1d9);
+      border-radius: 20px;
+      padding: 18px 18px 14px;
+      color: #5b3141;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.75);
+      transform: scale(0.85);
+      opacity: 0;
+      animation: modalIn 0.22s ease-out forwards;
+      position: relative;
+    }
+
+    @keyframes modalIn {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .modal-close {
+      position: absolute;
+      right: 10px;
+      top: 8px;
+      background: transparent;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 0.85rem;
+      color: #7b4353;
+      box-shadow: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .mood-cat-art {
+      text-align: center;
+      font-size: 2.4rem;
+      margin-bottom: 8px;
+    }
+
+    .mood-rescue-text p {
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+    }
+
+    /* Panic to Peace */
+
+    .breathing-overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #22112a, #050309);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9;
+      color: #ffe0f7;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .breathing-overlay.active {
+      display: flex;
+    }
+
+    .breathing-heart {
+      font-size: 3.4rem;
+      margin-bottom: 14px;
+      animation: breatheLoop 12s ease-in-out infinite;
+    }
+
+    @keyframes breatheLoop {
+      0%,
+      100% {
+        transform: scale(0.9);
+      }
+      25% {
+        transform: scale(1.18);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      75% {
+        transform: scale(0.95);
+      }
+    }
+
+    .breathing-steps {
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+      max-width: 380px;
+    }
+
+    .calmer-btn {
+      margin-top: 10px;
+      background: #ff9ecf;
+      color: #3a1120;
+    }
+
+    /* Emergency Hug */
+
+    .hug-popup {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      background: #ffe7f2;
+      border-radius: 16px;
+      padding: 16px 18px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
+      max-width: 360px;
+      color: #5a2b3b;
+      display: none;
+      z-index: 8;
+      animation: hugIn 0.2s ease-out forwards;
+    }
+
+    @keyframes hugIn {
+      to {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+    }
+
+    .hug-popup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .hug-cat {
+      font-size: 2.2rem;
+      text-align: center;
+      margin: 6px 0;
+    }
+
+    .hug-popup p {
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
+
+    /* Sticky Love Note */
+
+    .sticky-note {
+      width: 220px;
+      min-height: 100px;
+      background: #fff9c4;
+      color: #4a3b2a;
+      border-radius: 8px;
+      padding: 10px;
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.45);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transform-origin: center;
+      transition: transform 0.1s;
+      position: relative;
+    }
+
+    .sticky-note::before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: 30%;
+      width: 40px;
+      height: 14px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 4px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .sticky-note:hover {
+      transform: rotate(-1deg) scale(1.02);
+    }
+
+    /* Princess Affirmations slider */
+
+    .affirm-slider {
+      position: relative;
+      border-radius: 12px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .affirm-slide {
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8px;
+      font-size: 0.9rem;
+    }
+
+    .affirm-controls {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    /* Compliment heart */
+
+    .compliment-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .compliment-heart-btn {
+      font-size: 1.8rem;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #ff7eb3, #ff2d55);
+    }
+
+    .compliment-bubble {
+      min-height: 40px;
+      max-width: 260px;
+      background: rgba(255, 255, 255, 0.12);
+      padding: 8px 10px;
+      border-radius: 12px;
+      font-size: 0.86rem;
+      text-align: center;
+    }
+
+    /* Princess days */
+
+  .princess-days-big {
+    font-size: 1.1rem;
+    margin-top: 6px;
+  }
+    /* Moments */
+
+    .moments-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .moment-card {
+      border-radius: 14px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #ffb6c1, #b4f1de);
+      color: #3b2432;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.6);
+    }
+
+    .moment-photo {
+      height: 70px;
+      background: rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+
+    .moment-caption {
+      padding: 6px 8px;
+      font-size: 0.8rem;
+    }
+
+    /* Wish jars */
+
+    .jar-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .jar {
+      height: 70px;
+      border-radius: 18px 18px 10px 10px;
+      border: 2px solid rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.04);
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .jar::before {
+      content: "";
+      position: absolute;
+      top: -8px;
+      left: 25%;
+      width: 50%;
+      height: 10px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .jar-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      text-align: center;
+      padding: 4px;
+    }
+
+    .jar-wish-text {
+      margin-top: 8px;
+      min-height: 40px;
+      font-size: 0.9rem;
+    }
+
+    /* Love Weather */
+
+    .love-weather-card {
+      position: relative;
+      border-radius: 14px;
+      padding: 12px;
+      background: linear-gradient(135deg, #ffc1e3, #c3b6ff);
+      color: #4a1840;
+      overflow: hidden;
+    }
+
+    .heart-rain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: 0.4;
+    }
+
+    .heart-drop {
+      position: absolute;
+      font-size: 0.8rem;
+      animation: heartRain 5s linear infinite;
+    }
+
+    @keyframes heartRain {
+      0% {
+        transform: translateY(-20px);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(180px);
+        opacity: 0;
+      }
+    }
+
+    /* Cat AC */
+
+    .cat-ac {
+      width: 190px;
+      margin-top: 8px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 12px;
+      position: relative;
+      text-align: center;
+      overflow: visible;
+    }
+
+    .cat-ear {
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      background: #ffb6c1;
+      top: -18px;
+      border-radius: 6px 18px 0 18px;
+      transform: rotate(-15deg);
+    }
+
+    .cat-ear.right {
+      right: 35px;
+      transform: rotate(15deg) scaleX(-1);
+    }
+
+    .cat-ear.left {
+      left: 35px;
+    }
+
+    .ac-body {
+      margin-top: 10px;
+      padding: 8px;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.45);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ac-hearts {
+      position: absolute;
+      left: 50%;
+      bottom: -10px;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .ac-heart {
+      position: absolute;
+      font-size: 0.7rem;
+      animation: acBlow 3s linear infinite;
+    }
+
+    @keyframes acBlow {
+      0% {
+        transform: translate(0, 0);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-40px, -70px);
+        opacity: 0;
+      }
+    }
+
+    /* Claw machine */
+
+    .claw-machine {
+      border-radius: 14px;
+      padding: 10px;
+      background: linear-gradient(145deg, #ffd1fb, #b4f1de);
+      color: #4a2038;
+    }
+
+    .plush-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+      font-size: 1.2rem;
+    }
+
+    .claw-result {
+      margin-top: 6px;
+      font-size: 0.86rem;
+      min-height: 40px;
+    }
+
+    /* Hydration */
+
+    .hydration {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .glass {
+      width: 50px;
+      height: 120px;
+      border-radius: 12px 12px 8px 8px;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      display: flex;
+      flex-direction: column-reverse;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .sip-segment {
+      width: 100%;
+      height: calc(100% / 8);
+      background: linear-gradient(180deg, #b4f1de, #76e7c5);
+      border-top: 1px solid rgba(255, 255, 255, 0.3);
+      opacity: 0.1;
+      transition: opacity 0.15s;
+    }
+
+    .sip-segment.filled {
+      opacity: 1;
+    }
+
+    .hydration-text {
+      flex: 1;
+      font-size: 0.85rem;
+    }
+
+    /* Chocolate box */
+
+    .choco-box {
+      border-radius: 18px;
+      padding: 10px;
+      background: radial-gradient(circle at top, #ff9aa2, #ffb6c1);
+    }
+
+    .choco-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 24px);
+      gap: 6px;
+      justify-content: center;
+      margin-bottom: 6px;
+    }
+
+    .choco {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #6b3b2a;
+      box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.16);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .choco::after {
+      content: "❤";
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .choco-message {
+      min-height: 40px;
+      font-size: 0.86rem;
+    }
+
+    /* Bouquet */
+
+    .bouquet-area {
+      position: relative;
+      height: 150px;
+      margin-top: 6px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), #14343a);
+      overflow: hidden;
+    }
+
+    .vase {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70px;
+      height: 60px;
+      background: #4f7fa3;
+      border-radius: 40px 40px 10px 10px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+    }
+
+    .flower {
+      position: absolute;
+      bottom: 55px;
+      width: 10px;
+      height: 60px;
+      background: #2b7a3f;
+      border-radius: 6px;
+    }
+
+    .flower-head {
+      position: absolute;
+      top: -12px;
+      left: -6px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #ff5f7e;
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+    }
+
+    /* Love letters */
+
+    .letters-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .envelope {
+      width: 80px;
+      height: 50px;
+      border-radius: 8px;
+      background: #ffd1e6;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .envelope::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        transparent 50%,
+        rgba(255, 153, 187, 0.7) 50%
+      );
+    }
+
+    .letter-panel {
+      margin-top: 10px;
+      border-radius: 12px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.06);
+      max-height: 200px;
+      overflow-y: auto;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    /* Countdown */
+
+    .countdown-wrapper {
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    .countdown-time {
+      font-size: 1.2rem;
+      margin-top: 4px;
+    }
+
+    .countdown-hearts {
+      margin-top: 6px;
+      font-size: 1.2rem;
+      animation: countdownPulse 2.8s ease-in-out infinite;
+    }
+
+    @keyframes countdownPulse {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      70% {
+        transform: scale(1.08);
+      }
+    }
+
+    /* Sparkle mirror */
+
+    .mirror-frame {
+      border-radius: 16px;
+      padding: 10px;
+      background: linear-gradient(135deg, #ffe0ff, #b4f1de);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mirror-inner {
+      border-radius: 12px;
+      background: radial-gradient(circle at top, #fff, #f5f5f5);
+      color: #5d3050;
+      padding: 12px;
+      text-align: center;
+      min-height: 70px;
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.12);
+    }
+
+    .sparkle {
+      position: absolute;
+      font-size: 0.7rem;
+      color: #fff;
+      animation: twinkle 4s ease-in-out infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes twinkle {
+      0%,
+      100% {
+        transform: scale(0.7);
+        opacity: 0.2;
+      }
+      50% {
+        transform: scale(1.2);
+        opacity: 1;
+      }
+    }
+
+    /* Cocoa */
+
+    .cocoa-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .cocoa-mug {
+      width: 60px;
+      height: 60px;
+      border-radius: 0 0 20px 20px;
+      background: #7b4a32;
+      position: relative;
+      cursor: pointer;
+      overflow: visible;
+    }
+
+    .cocoa-mug::before {
+      content: "";
+      position: absolute;
+      right: -14px;
+      top: 16px;
+      width: 18px;
+      height: 24px;
+      border-radius: 50%;
+      border: 4px solid #7b4a32;
+      background: transparent;
+    }
+
+    .steam-heart {
+      position: absolute;
+      top: -20px;
+      left: 12px;
+      font-size: 1rem;
+      color: #ffdde9;
+      animation: steamRise 3s linear infinite;
+    }
+
+    .steam-heart:nth-child(2) {
+      left: 26px;
+      animation-delay: 1s;
+    }
+
+    @keyframes steamRise {
+      0% {
+        transform: translateY(10px) scale(0.7);
+        opacity: 0;
+      }
+      30% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-20px) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    .cocoa-text {
+      font-size: 0.86rem;
+      max-width: 260px;
+    }
+
+    /* Horoscope */
+
+    .horoscope-card {
+      border-radius: 14px;
+      padding: 10px;
+      background: radial-gradient(circle at top, #ffdfd3, #c3b6ff);
+      color: #4a2233;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 0.9rem;
+      position: relative;
+    }
+
+    .horoscope-controls {
+      margin-top: 6px;
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    /* Photos */
+
+    .photo-viewer {
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.45);
+  margin-top: 6px;
+  margin-bottom: 10px;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.7);
+  display: inline-block;     /* shrink to fit image width/height */
+  max-width: 100%;           /* still responsive */
+}
+
+    .photo-viewer img {
+  max-width: 100%;   /* scale down if too wide for screen */
+  height: auto;      /* height follows the image’s natural ratio */
+  display: block;
+}
+
+
+    .photo-viewer-caption {
+      padding: 8px 10px;
+      font-size: 0.86rem;
+      color: #ffe9f5;
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .photo-card {
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.04);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: transform 0.12s, box-shadow 0.12s;
+    }
+
+    .photo-card:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 13px 26px rgba(0, 0, 0, 0.8);
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 110px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .photo-caption {
+      padding: 6px 8px;
+      font-size: 0.78rem;
+      color: #ffe9f5;
+    }
+
+    /* Responsive */
+
+    @media (max-width: 768px) {
+      .window {
+        top: 60px;
+        left: 10px;
+        width: calc(100vw - 20px);
+      }
+      .desktop {
+        grid-template-columns: repeat(auto-fill, 70px);
+        grid-auto-rows: 80px;
+      }
+      .desktop-icon {
+        width: 70px;
+      }
+      .desktop-icon-label {
+        font-size: 0.7rem;
+      }
+      .taskbar {
+        padding: 0 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating particles -->
+  <div class="floating-particles" id="particles"></div>
+
+  <!-- DESKTOP ICONS -->
+  <div class="desktop">
+    <!-- OLD APPS -->
+    <div class="desktop-icon" data-window="old-app-1">
+      <div class="desktop-icon-img">📂</div>
+      <div class="desktop-icon-label">Memories</div>
+    </div>
+
+    <div class="desktop-icon" data-window="old-app-2">
+      <div class="desktop-icon-img">🎵</div>
+      <div class="desktop-icon-label">Our Songs</div>
+    </div>
+
+    <div class="desktop-icon" data-window="old-app-3">
+      <div class="desktop-icon-img">📸</div>
+      <div class="desktop-icon-label">Photos</div>
+    </div>
+
+    <!-- ORIGINAL GAME ICONS AND APPS -->
+    <div class="desktop-icon" data-window="game-love-notes">
+      <div class="desktop-icon-img">💌</div>
+      <div class="desktop-icon-label">Love Notes</div>
+    </div>
+
+    <div class="desktop-icon" data-window="game-memory">
+      <div class="desktop-icon-img">🧠</div>
+      <div class="desktop-icon-label">Us Memory</div>
+    </div>
+
+    <div class="desktop-icon" data-window="game-quiz">
+      <div class="desktop-icon-img">❓</div>
+      <div class="desktop-icon-label">Us Quiz</div>
+    </div>
+
+    <div class="desktop-icon" data-window="game-typing">
+      <div class="desktop-icon-img">⌨️</div>
+      <div class="desktop-icon-label">Typing Love</div>
+    </div>
+
+    <div class="desktop-icon" data-window="game-counter">
+      <div class="desktop-icon-img">🔢</div>
+      <div class="desktop-icon-label">Days With You</div>
+    </div>
+
+    <div class="desktop-icon" data-window="game-fortune">
+      <div class="desktop-icon-img">🔮</div>
+      <div class="desktop-icon-label">Love Fortune</div>
+    </div>
+
+    <div class="desktop-icon" data-window="game-puzzle">
+      <div class="desktop-icon-img">🧩</div>
+      <div class="desktop-icon-label">Unscramble</div>
+    </div>
+
+    <div class="desktop-icon" data-window="game-rps">
+      <div class="desktop-icon-img">✊</div>
+      <div class="desktop-icon-label">RPS Rewards</div>
+    </div>
+
+    <div class="desktop-icon" data-window="game-guess-number">
+      <div class="desktop-icon-img">🎯</div>
+      <div class="desktop-icon-label">Guess No.</div>
+    </div>
+
+    <div class="desktop-icon" data-window="game-spin">
+      <div class="desktop-icon-img">🎡</div>
+      <div class="desktop-icon-label">Love Wheel</div>
+    </div>
+
+    <!-- ORIGINAL APPS -->
+    <div class="desktop-icon" data-window="app-gratitude">
+      <div class="desktop-icon-img">📖</div>
+      <div class="desktop-icon-label">Gratitude</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-affirmations">
+      <div class="desktop-icon-img">💫</div>
+      <div class="desktop-icon-label">Affirmations</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-mood">
+      <div class="desktop-icon-img">😊</div>
+      <div class="desktop-icon-label">Mood Tracker</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-rant">
+      <div class="desktop-icon-img">🧸</div>
+      <div class="desktop-icon-label">Rant Space</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-wishes">
+      <div class="desktop-icon-img">✨</div>
+      <div class="desktop-icon-label">Wishes Jar</div>
+    </div>
+
+    <!-- NEW APPS -->
+    <div class="desktop-icon" data-window="app-mood-rescue">
+      <div class="desktop-icon-img">💟</div>
+      <div class="desktop-icon-label">Mood Rescue</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-panic-peace">
+      <div class="desktop-icon-img">🫧</div>
+      <div class="desktop-icon-label">Panic → Peace</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-hug">
+      <div class="desktop-icon-img">🤗</div>
+      <div class="desktop-icon-label">Emergency Hug</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-today-note">
+      <div class="desktop-icon-img">📝</div>
+      <div class="desktop-icon-label">Love Sticky</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-princess-affirm">
+      <div class="desktop-icon-img">👑</div>
+      <div class="desktop-icon-label">Princess Words</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-compliment-heart">
+      <div class="desktop-icon-img">❤️</div>
+      <div class="desktop-icon-label">Tap Compliment</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-princess-days">
+      <div class="desktop-icon-img">📅</div>
+      <div class="desktop-icon-label">Princess Days</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-moments-gallery">
+      <div class="desktop-icon-img">🎞️</div>
+      <div class="desktop-icon-label">Our Moments</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-wish-jar-extra">
+      <div class="desktop-icon-img">🫙</div>
+      <div class="desktop-icon-label">Future Jars</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-love-weather">
+      <div class="desktop-icon-img">☁️</div>
+      <div class="desktop-icon-label">Love Weather</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-cat-ac">
+      <div class="desktop-icon-img">😺</div>
+      <div class="desktop-icon-label">Cat AC</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-claw-machine">
+      <div class="desktop-icon-img">🕹️</div>
+      <div class="desktop-icon-label">Claw Plush</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-hydration">
+      <div class="desktop-icon-img">🥤</div>
+      <div class="desktop-icon-label">Hydration</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-choco-box">
+      <div class="desktop-icon-img">🍫</div>
+      <div class="desktop-icon-label">Choco Box</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-bouquet">
+      <div class="desktop-icon-img">💐</div>
+      <div class="desktop-icon-label">Bouquet</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-love-letters">
+      <div class="desktop-icon-img">✉️</div>
+      <div class="desktop-icon-label">Love Letters</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-countdown">
+      <div class="desktop-icon-img">⏳</div>
+      <div class="desktop-icon-label">Countdown</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-sparkle-mirror">
+      <div class="desktop-icon-img">🪞</div>
+      <div class="desktop-icon-label">Sparkle Mirror</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-cocoa">
+      <div class="desktop-icon-img">☕</div>
+      <div class="desktop-icon-label">Hot Cocoa</div>
+    </div>
+
+    <div class="desktop-icon" data-window="app-horoscope">
+      <div class="desktop-icon-img">🔯</div>
+      <div class="desktop-icon-label">Love Stars</div>
+    </div>
+  </div>
+
+  <!-- WINDOWS / APPS -->
+
+  <!-- OLD APP WINDOWS -->
+
+  <!-- Memories -->
+  <div class="window" id="old-app-1">
+    <div class="window-header">
+      <span class="window-title">Memories</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Little Timeline Of Us</h2>
+        <p>Scroll through tiny checkpoints where my life quietly changed because of you.</p>
+
+        <div id="memories-timeline"></div>
+
+        <h3 style="margin-top:10px; font-size:0.9rem;">Add another memory</h3>
+        <input type="text" id="memory-title" placeholder="Short title, e.g. First call at 2AM" />
+        <textarea id="memory-text" placeholder="What do you remember or feel from that moment?"></textarea>
+        <button id="memory-add">Save Memory</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Our Songs -->
+  <div class="window" id="old-app-2">
+    <div class="window-header">
+      <span class="window-title">Our Songs</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Little Playlist Of Us</h2>
+        <p>Press play and let the songs say the things my words forget.</p>
+
+        <div class="player-wrapper">
+          <div class="player-cover" id="player-cover">🎧</div>
+          <div class="player-info">
+            <div class="player-title" id="player-title">Song title</div>
+            <div class="player-artist" id="player-artist">Artist / note</div>
+          </div>
+
+          <audio id="audio-player"></audio>
+
+          <div class="player-progress">
+            <span class="player-time" id="player-current">0:00</span>
+            <input type="range" id="player-seek" value="0" min="0" max="100" />
+            <span class="player-time" id="player-duration">0:00</span>
+          </div>
+
+          <div class="player-controls">
+            <button id="player-prev">⏮</button>
+            <button id="player-play">▶</button>
+            <button id="player-next">⏭</button>
+          </div>
+        </div>
+
+        <ul class="player-list" id="player-list"></ul>
+        <p style="font-size:0.8rem; opacity:0.8; margin-top:6px;">
+          Songs are loaded from the <code>music/</code> folder in this little universe.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photos -->
+  <div class="window" id="old-app-3">
+    <div class="window-header">
+      <span class="window-title">Photos</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Our Photos</h2>
+        <p>Little pieces of us that my brain replays whenever it misses you.</p>
+
+        <div class="photo-viewer" id="photo-viewer">
+          <img src="photos/photo1.jpg" alt="You smiling" id="photo-viewer-img" />
+          <div class="photo-viewer-caption" id="photo-viewer-caption">
+            That smile I never get tired of.
+          </div>
+        </div>
+
+        <div class="photo-grid">
+          <div class="photo-card" data-photo="photos/photo1.jpg" data-caption="That smile I never get tired of.">
+            <img src="photos/photo1.jpg" alt="You smiling" />
+            <span class="photo-caption">Soft smile moment.</span>
+          </div>
+
+          <div class="photo-card" data-photo="photos/photo2.jpg" data-caption="The day we looked this soft together.">
+            <img src="photos/photo2.jpg" alt="Selfie together" />
+            <span class="photo-caption">Us, accidentally matching.</span>
+          </div>
+
+          <div class="photo-card" data-photo="photos/photo3.jpg" data-caption="A random moment that became a favourite.">
+            <img src="photos/photo3.jpg" alt="Random moment" />
+            <span class="photo-caption">Random day, precious memory.</span>
+          </div>
+
+          <div class="photo-card" data-photo="photos/photo4.jpg" data-caption="You looking away, still stealing the whole frame.">
+            <img src="photos/photo4.jpg" alt="Candid" />
+            <span class="photo-caption">Candid princess.</span>
+          </div>
+
+          <div class="photo-card" data-photo="photos/photo5.jpg" data-caption="A little chaos, a lot of love.">
+            <img src="photos/photo5.jpg" alt="Goofy moment" />
+            <span class="photo-caption">Our goofy chaos.</span>
+          </div>
+
+          <div class="photo-card" data-photo="photos/photo6.jpg" data-caption="The kind of quiet where my heart feels at home.">
+            <img src="photos/photo6.jpg" alt="Calm time" />
+            <span class="photo-caption">Calm with you.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GAME WINDOWS (same as earlier answer; kept intact) -->
+  <!-- For brevity, these are identical to the previous full code you got:
+       Love Notes, Memory Match, Quiz, Typing, Days Counter, Fortune,
+       Unscramble, RPS, Guess Number, Spin, Gratitude, Affirmations,
+       Mood Tracker, Rant, Wishes, plus all new 20 apps.
+       The JS below expects them exactly as in the previous message. -->
+
+  <!-- Love Notes -->
+  <div class="window" id="game-love-notes">
+    <div class="window-header">
+      <span class="window-title">Love Notes</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Love Notes</h2>
+        <p>Tap each heart to see one tiny reason why you are so loved.</p>
+        <div class="love-notes-grid">
+          <button class="note-card">❤️</button>
+          <button class="note-card">❤️</button>
+          <button class="note-card">❤️</button>
+          <button class="note-card">❤️</button>
+          <button class="note-card">❤️</button>
+          <button class="note-card">❤️</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Memory Match -->
+  <div class="window" id="game-memory">
+    <div class="window-header">
+      <span class="window-title">Us Memory Match</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Memory Match</h2>
+        <p>Match pairs of little pieces of our world.</p>
+        <div class="memory-grid">
+          <button class="memory-card" data-id="1">?</button>
+          <button class="memory-card" data-id="2">?</button>
+          <button class="memory-card" data-id="3">?</button>
+          <button class="memory-card" data-id="1">?</button>
+          <button class="memory-card" data-id="2">?</button>
+          <button class="memory-card" data-id="3">?</button>
+        </div>
+        <p class="memory-status"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Us Quiz -->
+  <div class="window" id="game-quiz">
+    <div class="window-header">
+      <span class="window-title">Us Quiz</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Little Us Quiz</h2>
+        <p>Every answer is about us, not about being correct.</p>
+        <div class="quiz-q"></div>
+        <div class="quiz-options"></div>
+        <p class="quiz-result"></p>
+        <button class="quiz-next">Next Question</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Typing Love -->
+  <div class="window" id="game-typing">
+    <div class="window-header">
+      <span class="window-title">Typing Love</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Type The Love</h2>
+        <p>Type the sentence below and see how fast your love flows.</p>
+        <p class="typing-target"></p>
+        <input type="text" class="typing-input" placeholder="Start typing here..." />
+        <p class="typing-result"></p>
+        <button class="typing-restart">New Line</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Days Counter -->
+  <div class="window" id="game-counter">
+    <div class="window-header">
+      <span class="window-title">Days With You</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Days With You</h2>
+        <p>See how many days of my life you already made better.</p>
+        <label>
+          Our day started on:
+          <input type="date" id="start-date" />
+        </label>
+        <button id="calc-days">Calculate</button>
+        <p class="days-output"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Love Fortune -->
+  <div class="window" id="game-fortune">
+    <div class="window-header">
+      <span class="window-title">Love Fortune Cookie</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Love Fortune Cookie</h2>
+        <p>Crack a cookie and see a tiny future of us.</p>
+        <button class="fortune-btn">Crack Cookie 💗</button>
+        <p class="fortune-text"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Unscramble -->
+  <div class="window" id="game-puzzle">
+    <div class="window-header">
+      <span class="window-title">Unscramble The Message</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Unscramble The Message</h2>
+        <p>Click the letters in order to reveal what my heart keeps saying.</p>
+        <div class="puzzle-letters"></div>
+        <p class="puzzle-answer"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- RPS -->
+  <div class="window" id="game-rps">
+    <div class="window-header">
+      <span class="window-title">Rock Paper Scissors</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Rock Paper Scissors – But Cute</h2>
+        <p>If you win, you get a wish. If you lose, you still get a wish.</p>
+        <div class="rps-buttons">
+          <button data-hand="rock">✊ Rock</button>
+          <button data-hand="paper">✋ Paper</button>
+          <button data-hand="scissors">✌️ Scissors</button>
+        </div>
+        <p class="rps-status"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Guess Number -->
+  <div class="window" id="game-guess-number">
+    <div class="window-header">
+      <span class="window-title">Guess The Number</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Guess The Number</h2>
+        <p>Guess a number between 1 and 30 to unlock a sweet reward.</p>
+        <div class="guess-inline">
+          <input type="number" class="guess-input" min="1" max="20" />
+          <button class="guess-btn">Guess</button>
+        </div>
+        <p class="guess-status"></p>
+        <p class="guess-reward"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Spin -->
+  <div class="window" id="game-spin">
+    <div class="window-header">
+      <span class="window-title">Spin The Love Wheel</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Spin The Love Wheel</h2>
+        <p>Spin to see what small thing I owe you tonight.</p>
+        <button class="spin-btn">Spin 🎡</button>
+        <p class="spin-result"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gratitude -->
+  <div class="window" id="app-gratitude">
+    <div class="window-header">
+      <span class="window-title">Gratitude Book For You</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Gratitude Journal</h2>
+        <p>Moments and reasons I am thankful that you exist.</p>
+        <ul id="gratitude-list">
+  <li>Your laugh when you’re trying not to laugh always makes me smile too ily jaana</li>
+  <li>The way you care so much about the people you love is really beautiful to see yaar</li>
+  <li>Just being around you makes normal moments feel special and plus your talks ufff</li>
+  <li>Your strength even on days you don’t feel strong amazes me every time</li>
+  <li>The little things you do that show kindness even when no one notices mean so much</li>
+  <li>Being with you makes me feel safe calm and like I’m home</li>
+  <li>How honest and open you are makes me trust you and love you even more</li>
+  <li>The way your eyes light up when you’re excited about something I could watch forever</li>
+  <li>Your heart is so soft and caring but also so strong and it teaches me about love every day</li>
+  <li>Every time you smile at me I can’t help feeling like the luckiest person alive</li>
+</ul>
+
+        <p style="margin-top:8px;">
+          Add another thing I am grateful for (you can type anything you feel
+          like):
+        </p>
+        <input
+          type="text"
+          id="gratitude-input"
+          placeholder="Your own words here..."
+        />
+        <button id="gratitude-add">Add</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Affirmations -->
+  <div class="window" id="app-affirmations">
+    <div class="window-header">
+      <span class="window-title">Affirmations For You</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Affirmation Cards</h2>
+        <p>Click to get a tiny reminder of how powerful and soft you are.</p>
+        <button id="affirmation-next">Next Card</button>
+        <div class="affirmation-card" id="affirmation-text"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mood Tracker -->
+  <div class="window" id="app-mood">
+    <div class="window-header">
+      <span class="window-title">Mood Tracker</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>How Are You Feeling?</h2>
+        <p>Choose your mood and write one small thing that made you smile.</p>
+        <div class="mood-row">
+          <button class="mood-btn" data-mood="😊">😊</button>
+          <button class="mood-btn" data-mood="😐">😐</button>
+          <button class="mood-btn" data-mood="😔">😔</button>
+        </div>
+        <textarea
+          id="mood-note"
+          placeholder="One little good thing from today..."
+        ></textarea>
+        <button id="mood-save">Save Moment</button>
+        <div class="mood-history" id="mood-history"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rant -->
+  <div class="window" id="app-rant">
+    <div class="window-header">
+      <span class="window-title">Rant To Me</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Safe Rant Space</h2>
+        <p>
+          Write anything you want. No fixing, no judging, just me holding it for
+          you.
+        </p>
+        <textarea id="rant-input" placeholder="I am listening..."></textarea>
+        <button id="rant-send">Send</button>
+        <p id="rant-response"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wishes -->
+  <div class="window" id="app-wishes">
+    <div class="window-header">
+      <span class="window-title">Future Wishes Jar</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Our Future Wishes</h2>
+        <p>Add little things you want us to do together.</p>
+        <input
+          type="text"
+          id="wish-input"
+          placeholder="Ex: Road trip to the mountains"
+        />
+        <button id="wish-add">Add Wish</button>
+        <ul id="wish-list"></ul>
+        <button id="wish-highlight" style="margin-top:8px;">Today’s Wish</button>
+        <p id="wish-today"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mood Rescue window -->
+  <div class="window" id="app-mood-rescue">
+    <div class="window-header">
+      <span class="window-title">Mood Rescue</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>For Heavy Days</h2>
+        <p>
+          When the world feels loud and sharp, come back here and press the button again to recieve a new reminder. This little space will always be ready to hold you gently and remind you how loved you are.
+        </p>
+        <button id="open-mood-modal">Open Mood Rescue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mood Rescue modal -->
+  <div class="modal-overlay" id="mood-modal">
+    <div class="modal-content">
+      <button class="modal-close" id="close-mood-modal">✕</button>
+      <div class="mood-cat-art">(=^◕ᴥ◕^=)っ💖</div>
+      <div class="mood-rescue-text" id="mood-rescue-text"></div>
+
+    </div>
+  </div>
+
+  <!-- Panic to Peace window -->
+  <div class="window" id="app-panic-peace">
+    <div class="window-header">
+      <span class="window-title">Panic → Peace</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Gentle Breathing Space</h2>
+        <p>
+          When your chest feels tight and thoughts run fast, let this little
+          screen breathe with you.
+        </p>
+        <button id="open-breathing">Open Panic to Peace</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="breathing-overlay" id="breathing-overlay">
+    <div class="breathing-heart">💗</div>
+    <div class="breathing-steps">
+      Breathe in with your heart for 4 counts, hold it with me for 4, and breathe out slowly for 4 my kuchu muchu. 
+      Follow the rhythm of the little heartbeat on the screen as you go. 
+      Let your shoulders soften, your mind rest, and remember you are not alone in this moment.
+    </div>
+    <p>
+      If the thoughts feel too loud, just focus on the next breath, not the
+      next week.
+    </p>
+    <button class="calmer-btn" id="close-breathing">
+      I feel a bit calmer
+    </button>
+  </div>
+
+  <!-- Emergency Hug window -->
+  <div class="window" id="app-hug">
+    <div class="window-header">
+      <span class="window-title">Emergency Hug Button</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Hug In One Click</h2>
+        <p>
+          If you wish I could teleport to hug you, this is the closest thing
+          for now.
+        </p>
+        <button id="open-hug-popup">Call Emergency Hug</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="hug-popup" id="hug-popup">
+    <div class="hug-popup-header">
+      <strong>Emergency Hug Incoming</strong>
+      <button class="modal-close" id="close-hug-popup">✕</button>
+    </div>
+    <div class="hug-cat">🐱💋</div>
+    <p>
+      Imagine me wrapping both arms around you, squeezing just tight enough so
+      your body remembers you are loved and not alone.
+    </p>
+    <p>
+      You never have to earn this hug. It exists simply because you exist, and
+      that is already more than enough.
+    </p>
+    <p>
+      Even from far away, my heart is pressed against yours, whispering, “You
+      are safe with me cutuuu, humesha humesha.”
+    </p>
+  </div>
+
+  <!-- Today’s Love Note window -->
+  <div class="window" id="app-today-note">
+    <div class="window-header">
+      <span class="window-title">Today’s Love Sticky</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Little Note On Your Desk</h2>
+        <p>Tap the note whenever you need a softer thought in your day.</p>
+        <div class="sticky-note" id="sticky-note">
+          Even on days when you feel dim, you are still the warmest light in
+          my world.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Princess Affirmations -->
+  <div class="window" id="app-princess-affirm">
+    <div class="window-header">
+      <span class="window-title">Princess Affirmations</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Words For My Princess</h2>
+        <p>
+          Slide through these little truths that stay real even when your mind
+          forgets them.
+        </p>
+        <div class="affirm-slider">
+          <div class="affirm-slide" id="affirm-slide">
+            You are not a burden; you are the reason my world feels softer.
+          </div>
+          <div class="affirm-controls">
+            <button id="affirm-prev">◀</button>
+            <button id="affirm-next">▶</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compliment Heart -->
+  <div class="window" id="app-compliment-heart">
+    <div class="window-header">
+      <span class="window-title">Compliment Heart</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Tap For A Little Glow</h2>
+        <p>
+          Every click is a reminder of something beautiful about you that your
+          brain might skip over.
+        </p>
+        <div class="compliment-container">
+          <button class="compliment-heart-btn" id="compliment-heart">
+            💖
+          </button>
+          <div class="compliment-bubble" id="compliment-text">
+            Tap the heart to hear how magical you look from my side of the
+            screen.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Princess Days -->
+<div class="window" id="app-princess-days">
+  <div class="window-header">
+    <span class="window-title">Days With My Princess</span>
+    <div class="window-controls">
+      <button class="window-btn min"></button>
+      <button class="window-btn close"></button>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="section-box">
+      <h2>Since We Became “Us”</h2>
+      <p>
+        This counter quietly keeps track of how many days my life has been
+        better because you are in it.
+      </p>
+
+      <!-- User sets the date here -->
+      <input type="date" id="start-date-input" />
+      <p class="princess-days-big" id="princess-days-text">
+        Set our date above to see the count!
+      </p>
+    </div>
+  </div>
+</div>
+
+  <!-- Moments Gallery -->
+  <div class="window" id="app-moments-gallery">
+    <div class="window-header">
+      <span class="window-title">Our Little Moments</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Snapshots Of Us</h2>
+        <p>
+          These are not real photos, but they are little scenes my heart keeps
+          replaying when it misses you.
+        </p>
+        <div class="moments-grid" id="moments-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wish Jar Extra -->
+  <div class="window" id="app-wish-jar-extra">
+    <div class="window-header">
+      <span class="window-title">Wish Jars</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Future Little Adventures</h2>
+        <p>Every jar hides a tiny plan I want to live with you.</p>
+        <div class="jar-row" id="jar-row"></div>
+        <p class="jar-wish-text" id="jar-wish-text"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Love Weather -->
+  <div class="window" id="app-love-weather">
+    <div class="window-header">
+      <span class="window-title">Love Weather</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Today’s Forecast</h2>
+        <p>Check the emotional weather where you are always the sun.</p>
+        <div class="love-weather-card">
+          <div class="heart-rain" id="heart-rain"></div>
+          <p id="love-weather-text">
+            100% chance of cuddles, with scattered forehead kisses throughout
+            the evening.
+          </p>
+        </div>
+        <button id="weather-refresh" style="margin-top:8px;">
+          Change Forecast
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cat AC -->
+  <div class="window" id="app-cat-ac">
+    <div class="window-header">
+      <span class="window-title">Cat Ear AC</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Comfort Mode Control</h2>
+        <p>
+          Turn on the Cat AC whenever your mind feels overheated and needs
+          cool, gentle air made of love and tiny hearts.
+        </p>
+        <div class="cat-ac">
+          <div class="cat-ear left"></div>
+          <div class="cat-ear right"></div>
+          <div class="ac-body">
+            <p id="ac-status">Comfort mode: OFF (but you are still adored).</p>
+            <div class="ac-hearts" id="ac-hearts"></div>
+          </div>
+        </div>
+        <button id="ac-toggle" style="margin-top:8px;">Toggle Cat AC</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Claw Machine -->
+  <div class="window" id="app-claw-machine">
+    <div class="window-header">
+      <span class="window-title">Love Claw Machine</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Pick A Plushie</h2>
+        <p>
+          Drop the claw and see which tiny plush and message is coming to sit
+          on your heart today.
+        </p>
+        <div class="claw-machine">
+          <div class="plush-row">
+            <span>🧸</span>
+            <span>🐱</span>
+            <span>🐰</span>
+            <span>🐻‍❄️</span>
+            <span>🦊</span>
+            <span>🐼</span>
+          </div>
+          <button id="claw-drop" style="margin-top:6px;">Drop The Claw</button>
+          <div class="claw-result" id="claw-result"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hydration -->
+  <div class="window" id="app-hydration">
+    <div class="window-header">
+      <span class="window-title">Hydration Princess</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Water Check, Princess</h2>
+        <p>Each sip is a tiny “I care about me” and I am proud of you for it.</p>
+        <div class="hydration">
+          <div class="glass" id="glass"></div>
+          <div class="hydration-text">
+            <p id="hydration-message">
+              Click “Sip” every time you drink a little water today.
+            </p>
+            <button id="sip-btn" style="margin-top:4px;">Sip</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Choco Box -->
+  <div class="window" id="app-choco-box">
+    <div class="window-header">
+      <span class="window-title">Chocolate Box</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Pick A Sweet Thought</h2>
+        <p>Each chocolate hides a little memory or compliment from me.</p>
+        <div class="choco-box">
+          <div class="choco-grid" id="choco-grid"></div>
+          <div class="choco-message" id="choco-message"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bouquet -->
+  <div class="window" id="app-bouquet">
+    <div class="window-header">
+      <span class="window-title">Bouquet Builder</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Flowers For Your Heart</h2>
+        <p>
+          Add one flower for every day you showed up, even when you felt like
+          hiding.
+        </p>
+        <div class="bouquet-area" id="bouquet-area">
+          <div class="vase"></div>
+        </div>
+        <button id="add-flower" style="margin-top:6px;">Add Flower</button>
+        <p id="bouquet-message" style="margin-top:4px;"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Love Letters -->
+  <div class="window" id="app-love-letters">
+    <div class="window-header">
+      <span class="window-title">Love Letter Inbox</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Letters For Your Soft Heart</h2>
+        <p>Click an envelope to open a letter your brain can reread on hard days.</p>
+        <div class="letters-grid">
+          <div class="envelope" data-letter="0"></div>
+          <div class="envelope" data-letter="1"></div>
+          <div class="envelope" data-letter="2"></div>
+        </div>
+        <div class="letter-panel" id="letter-panel"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Countdown -->
+  <div class="window" id="app-countdown">
+    <div class="window-header">
+      <span class="window-title">Couple Countdown</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Next Date Countdown</h2>
+        <p>Here is how long until the next time I get to hold you again.</p>
+        <div class="countdown-wrapper">
+          <div class="countdown-time" id="countdown-time"></div>
+          <div class="countdown-hearts" id="countdown-hearts">💗💗💗</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sparkle Mirror -->
+  <div class="window" id="app-sparkle-mirror">
+    <div class="window-header">
+      <span class="window-title">Sparkle Mirror</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>How I See You</h2>
+        <p>
+          This mirror does not care about angles, filters, or bad hair days;
+          it only reflects the way my heart sees you.
+        </p>
+        <div class="mirror-frame">
+          <div class="mirror-inner" id="mirror-text">
+            Prettiest girl detected. Softest heart detected. Irreplaceable
+            energy detected.
+          </div>
+          <span class="sparkle" style="top:8px; left:14px;">✧</span>
+          <span class="sparkle" style="bottom:10px; right:12px; animation-delay:1s;">✦</span>
+          <span class="sparkle" style="top:50%; right:25%; animation-delay:2s;">✶</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cocoa -->
+  <div class="window" id="app-cocoa">
+    <div class="window-header">
+      <span class="window-title">Comfort Hot Cocoa</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Cup Of Gentle Reminders</h2>
+        <p>Tap the mug for a new cozy thought to wrap yourself in.</p>
+        <div class="cocoa-area">
+          <div class="cocoa-mug" id="cocoa-mug">
+            <span class="steam-heart">❤</span>
+            <span class="steam-heart">❤</span>
+          </div>
+          <div class="cocoa-text" id="cocoa-text">
+            You are allowed to rest, even when your brain tells you that you
+            have not done enough.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Horoscope -->
+  <div class="window" id="app-horoscope">
+    <div class="window-header">
+      <span class="window-title">Love Horoscope</span>
+      <div class="window-controls">
+        <button class="window-btn min"></button>
+        <button class="window-btn close"></button>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="section-box">
+        <h2>Love Stars Today</h2>
+        <p>Let the stars give you a tiny love update for today.</p>
+        <div class="horoscope-card">
+          <span id="horoscope-text">
+            Today’s forecast: extra cuddles and reassurance, especially when you pretend you do not need either.
+          </span>
+        </div>
+        <div class="horoscope-controls">
+          <button id="horoscope-next">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TASKBAR -->
+  <div class="taskbar">
+    <div class="start-button" id="start-button">
+      <span class="start-heart">💖</span>
+      <span>Love&nbsp;Start</span>
+    </div>
+    <div class="taskbar-right">
+      <div class="status-dot"></div>
+      <span>Connected to: My Heart</span>
+    </div>
+  </div>
+
+  <!-- START MENU -->
+  <div class="start-menu" id="start-menu">
+    <div class="start-menu-header">
+      <span class="start-menu-title">Love OS Menu</span>
+      <span>for my princess</span>
+    </div>
+    <div class="start-menu-list">
+      <div class="start-item" data-window="game-love-notes">
+        <span class="start-item-emoji">💌</span>
+        <span class="start-item-label">Love Notes</span>
+      </div>
+      <div class="start-item" data-window="app-mood-rescue">
+        <span class="start-item-emoji">💟</span>
+        <span class="start-item-label">Mood Rescue</span>
+      </div>
+      <div class="start-item" data-window="app-panic-peace">
+        <span class="start-item-emoji">🫧</span>
+        <span class="start-item-label">Panic → Peace</span>
+      </div>
+      <div class="start-item" data-window="app-hug">
+        <span class="start-item-emoji">🤗</span>
+        <span class="start-item-label">Emergency Hug</span>
+      </div>
+      <div class="start-item" data-window="app-cocoa">
+        <span class="start-item-emoji">☕</span>
+        <span class="start-item-label">Comfort Cocoa</span>
+      </div>
+      <div class="start-item" data-window="app-sparkle-mirror">
+        <span class="start-item-emoji">🪞</span>
+        <span class="start-item-label">Sparkle Mirror</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Window manager
+    const desktopIcons = document.querySelectorAll(".desktop-icon");
+    const windows = document.querySelectorAll(".window");
+
+    function openWindow(id) {
+      windows.forEach((w) => {
+        if (w.id === id) {
+          w.classList.add("active");
+        } else {
+          w.classList.remove("active");
+        }
+      });
+    }
+
+    desktopIcons.forEach((icon) => {
+      icon.addEventListener("click", () => {
+        const target = icon.dataset.window;
+        if (target) openWindow(target);
+      });
+    });
+
+    document.body.addEventListener("click", (e) => {
+      if (e.target.classList.contains("window-btn")) {
+        const btn = e.target;
+        const win = btn.closest(".window");
+        if (btn.classList.contains("close")) {
+          win.classList.remove("active");
+        } else if (btn.classList.contains("min")) {
+          win.classList.remove("active");
+        }
+      }
+    });
+
+    // Start menu
+    const startButton = document.getElementById("start-button");
+    const startMenu = document.getElementById("start-menu");
+    startButton.addEventListener("click", () => {
+      startMenu.classList.toggle("active");
+    });
+    startMenu.addEventListener("click", (e) => {
+      const item = e.target.closest(".start-item");
+      if (!item) return;
+      const winId = item.dataset.window;
+      openWindow(winId);
+      startMenu.classList.remove("active");
+    });
+
+    // Floating particles
+    const particlesContainer = document.getElementById("particles");
+    if (particlesContainer) {
+      const symbols = ["❤", "✦", "✧", "💫", "♡"];
+      for (let i = 0; i < 40; i++) {
+        const span = document.createElement("span");
+        span.className = "particle";
+        span.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        span.style.left = Math.random() * 100 + "%";
+        span.style.animationDuration = 15 + Math.random() * 10 + "s";
+        span.style.fontSize = 0.7 + Math.random() * 0.8 + "rem";
+        particlesContainer.appendChild(span);
+      }
+    }
+
+    // Love Notes
+    const noteMessages = [
+  "You are far more deserving of love and kindness than you ever give yourself credit for.",
+  "Your presence alone adds value to every space you enter.",
+  "You don’t have to try so hard to be worthy — you already are.",
+  "You matter deeply, even on days when you feel unsure or quiet.",
+  "Your heart and effort mean more than you realize to the people who know you.",
+  "You are enough exactly as you are, even when you doubt it."
+];
+
+    const noteCards = document.querySelectorAll(".note-card");
+    if (noteCards.length) {
+      noteCards.forEach((card, idx) => {
+        card.addEventListener("click", () => {
+          if (!card.classList.contains("revealed")) {
+            card.classList.add("revealed");
+            card.textContent = noteMessages[idx % noteMessages.length];
+          } else {
+            card.classList.remove("revealed");
+            card.textContent = "❤️";
+          }
+        });
+      });
+    }
+
+    // Memory Match
+    const memoryCards = document.querySelectorAll(".memory-card");
+    const memoryStatus = document.querySelector(".memory-status");
+    if (memoryCards.length) {
+      const memoryValues = ["🌙", "🌙", "🍫", "🍫", "💌", "💌"];
+      let openCards = [];
+      let matchedCount = 0;
+      memoryValues.sort(() => Math.random() - 0.5);
+      memoryCards.forEach((card, i) => {
+        card.dataset.value = memoryValues[i];
+        card.addEventListener("click", () => {
+          if (
+            card.classList.contains("matched") ||
+            card.textContent !== "?" ||
+            openCards.length === 2
+          )
+            return;
+          card.textContent = card.dataset.value;
+          openCards.push(card);
+          if (openCards.length === 2) {
+            if (openCards[0].dataset.value === openCards[1].dataset.value) {
+              openCards.forEach((c) => c.classList.add("matched"));
+              matchedCount += 2;
+              memoryStatus.textContent =
+                "You matched a piece of our little world.";
+              openCards = [];
+              if (matchedCount === memoryCards.length) {
+                memoryStatus.textContent =
+                  "You remembered everything… just like you always notice the little things about us, the tiny moments that make our life together feel so real and so ours. I love that about you, and it makes me fall for you even more every day";
+              }
+            } else {
+              memoryStatus.textContent =
+                "Not this time, try again cutie.";
+              setTimeout(() => {
+                openCards.forEach((c) => (c.textContent = "?"));
+                openCards = [];
+              }, 700);
+            }
+          }
+        });
+      });
+    }
+
+    // Quiz
+    const quizQuestions = [
+      {
+        q: "Where would I love to be with you on New Year’s Eve?",
+        options: ["Crowded party", "Quiet cozy place with you", "Random road trip"],
+        answerIndex: 1,
+        msg: "You know me too well. Tussi best ho meri rasmalai❤️👌."
+      },
+      {
+        q: "What is my favourite thing about you?",
+        options: ["Your smile", "Your mind", "You"],
+        answerIndex: 2,
+        msg: "You, as a whole, make everything sweeter just by being you my kuchu puchu🙈."
+      },
+      {
+        q: "Best way to end this year?",
+        options: ["Talking for hours", "Movie marathon", "Sleeping early"],
+        answerIndex: 0,
+        msg: "Talking to you never feels wasted, it always feels like exactly where I’m meant to be💞"
+      }
+    ];
+    let quizIndex = 0;
+    const quizQ = document.querySelector(".quiz-q");
+    const quizOptionsBox = document.querySelector(".quiz-options");
+    const quizResult = document.querySelector(".quiz-result");
+    const quizNextBtn = document.querySelector(".quiz-next");
+
+    function loadQuiz() {
+      const current = quizQuestions[quizIndex];
+      quizQ.textContent = current.q;
+      quizOptionsBox.innerHTML = "";
+      quizResult.textContent = "";
+      current.options.forEach((opt, i) => {
+        const b = document.createElement("button");
+        b.textContent = opt;
+        b.addEventListener("click", () => {
+          if (i === current.answerIndex) {
+            quizResult.textContent = current.msg;
+          } else {
+            quizResult.textContent =
+              "Cute answer, but my heart says something else here.";
+          }
+        });
+        quizOptionsBox.appendChild(b);
+      });
+    }
+    if (quizQ) {
+      loadQuiz();
+      quizNextBtn.addEventListener("click", () => {
+        quizIndex = (quizIndex + 1) % quizQuestions.length;
+        loadQuiz();
+      });
+    }
+
+    // Typing Love
+    const typingLines = [
+  "You are my calm and my chaos in the best way.",
+  "Thank you for loving me the way you do.",
+  "I am so lucky to be ending this year with you.",
+  "You are my favourite notification and my favourite silence.",
+  "Even your smallest smiles can make my entire day brighter.",
+  "I love how safe and seen I feel with you.",
+  "You make ordinary moments feel extraordinary.",
+  "Being with you feels like finally coming home.",
+  "Every little thing you do stays in my heart.",
+  "You are the sweetest thought I get to wake up to.",
+  "Your laughter is my favorite song in the world.",
+  "I never get tired of hearing your voice.",
+  "You make even the quietest days feel full of love.",
+  "Every moment with you is a memory I treasure.",
+  "I love how you make my heart feel both calm and alive.",
+  "You make the world softer, warmer, and brighter just by being in it."
+];
+
+    const typingTarget = document.querySelector(".typing-target");
+    const typingInput = document.querySelector(".typing-input");
+    const typingResult = document.querySelector(".typing-result");
+    const typingRestart = document.querySelector(".typing-restart");
+    let currentLine = "";
+    let startTime = null;
+
+    function newTypingLine() {
+      if (!typingTarget) return;
+      currentLine =
+        typingLines[Math.floor(Math.random() * typingLines.length)];
+      typingTarget.textContent = currentLine;
+      typingInput.value = "";
+      typingResult.textContent = "";
+      startTime = null;
+    }
+    if (typingInput) {
+      typingInput.addEventListener("input", () => {
+        if (!startTime) startTime = Date.now();
+        if (typingInput.value === currentLine) {
+          const seconds = ((Date.now() - startTime) / 1000).toFixed(1);
+          typingResult.textContent = `You typed it in ${seconds} seconds, that is how fast love flows from you.`;
+        }
+      });
+      typingRestart.addEventListener("click", newTypingLine);
+      newTypingLine();
+    }
+
+    // Days with you
+    const startDateInput = document.getElementById("start-date");
+    const calcDaysBtn = document.getElementById("calc-days");
+    const daysOutput = document.querySelector(".days-output");
+    if (calcDaysBtn) {
+      calcDaysBtn.addEventListener("click", () => {
+        const val = startDateInput.value;
+        if (!val) {
+          daysOutput.textContent = "Pick the day we became us.";
+          return;
+        }
+        const start = new Date(val);
+        const now = new Date();
+        const diff = now - start;
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        daysOutput.textContent = `We’ve had ${days} days together, and every day with you makes my heart feel full and at home..I LOVEEE YOUUU SOO MUCHHH🫂💕💕`;
+      });
+    }
+
+    // Fortune
+    const fortunes = [
+  "Today might not be perfect, but it will be kinder to you than you expect.",
+  "Even on quiet days, you are still deeply loved and thought about.",
+  "Something small will happen today and quietly make your heart feel lighter.",
+  "You don’t notice it, but your presence already makes people feel safer.",
+  "The universe is gently working things out in your favor behind the scenes.",
+  "You are allowed to take things slowly and still be doing amazingly well.",
+  "A silly little moment today will turn into a memory you smile about later.",
+  "Your smile has a way of fixing things you never even touch.",
+  "You are growing beautifully, even on days that feel messy or confusing.",
+  "Someone is proud of you for things you think are insignificant.",
+  "You deserve love that feels calm, warm, and a little bit playful.",
+  "Today will remind you that you don’t have to earn being cared for.",
+  "Good things are finding their way to you, just taking the scenic route.",
+  "Your heart is softer than you think, and stronger than you realize.",
+  "You will feel appreciated in a way that feels genuine and comforting.",
+  "Even when you doubt yourself, you are still someone’s favorite person.",
+  "A laugh is waiting for you today, probably over something very silly.",
+  "You are allowed to feel happy without questioning how long it will last.",
+  "The love around you is real, steady, and not going anywhere.",
+  "You make ordinary moments feel warm just by being yourself.",
+  "Something today will gently remind you that you’re doing just fine.",
+  "Your kindness leaves a bigger impact than you’ll ever fully see.",
+  "You deserve rest, reassurance, and a little bit of harmless nonsense.",
+  "You are more cherished than your quiet worries suggest.",
+  "A soft, comforting moment is waiting for you later today.",
+  "You are allowed to take up space and still be loved deeply.",
+  "Your laugh will make someone’s whole day better without you knowing.",
+  "The universe isn’t rushing you — it’s rooting for you.",
+  "You are safe to be soft, silly, and completely yourself.",
+  "Something good is coming that will make you think, ‘okay, that was nice.’",
+  "Your heart is being held very gently, even when you feel unsure.",
+  "You don’t have to be perfect to be deeply loved.",
+  "Today will end with you feeling calmer than you expected.",
+  "You are important in ways that don’t need proving.",
+  "Your smile is someone’s favorite part of their day.",
+  "You are exactly the kind of person the world needs more of.",
+  "You deserve love that feels like home and laughter combined.",
+  "You are doing better than yesterday, and that matters.",
+  "You are never too much — you are just right.",
+  "You are loved, appreciated, and thought of… especially by me."
+];
+
+    const fortuneBtn = document.querySelector(".fortune-btn");
+    const fortuneText = document.querySelector(".fortune-text");
+    if (fortuneBtn) {
+      fortuneBtn.addEventListener("click", () => {
+        const msg =
+          fortunes[Math.floor(Math.random() * fortunes.length)];
+        fortuneText.textContent = msg;
+      });
+    }
+
+    // Unscramble
+    const hiddenMessage = "I LOVE YOU";
+    const puzzleLettersBox = document.querySelector(".puzzle-letters");
+    const puzzleAnswer = document.querySelector(".puzzle-answer");
+    let builtMessage = "";
+
+    function setupPuzzle() {
+      if (!puzzleLettersBox) return;
+      const letters = hiddenMessage.split("");
+      letters.sort(() => Math.random() - 0.5);
+      puzzleLettersBox.innerHTML = "";
+      builtMessage = "";
+      puzzleAnswer.textContent = "";
+      letters.forEach((ltr) => {
+        const b = document.createElement("button");
+        b.textContent = ltr;
+        b.addEventListener("click", () => {
+          builtMessage += ltr;
+          puzzleAnswer.textContent = builtMessage;
+          b.disabled = true;
+          if (
+            builtMessage.replace(/\s/g, "") ===
+            hiddenMessage.replace(/\s/g, "")
+          ) {
+            puzzleAnswer.textContent = `${builtMessage} — and I mean every letter.`;
+          }
+        });
+        puzzleLettersBox.appendChild(b);
+      });
+    }
+    setupPuzzle();
+
+    // RPS
+    const rpsBtnBox = document.querySelector(".rps-buttons");
+    const rpsStatus = document.querySelector(".rps-status");
+    const hands = ["rock", "paper", "scissors"];
+
+    function decideRps(user, bot) {
+  if (user === bot) 
+    return "Draw! But really… we you win, because any moment with you is a victory for my heart🤗💘💕.";
+    
+  if (
+    (user === "rock" && bot === "scissors") ||
+    (user === "paper" && bot === "rock") ||
+    (user === "scissors" && bot === "paper")
+  )
+    return "You win! And in my world, you always do... because your happiness is everything to me🫂🫂.";
+    
+  return "I ‘win’? Bilkull nahiii… really, seeing you happy is my win.... so let’s call it yours jaan, with extra kisses ummahhh😽💋💋💋💋.";
+}
+
+
+    if (rpsBtnBox) {
+      rpsBtnBox.addEventListener("click", (e) => {
+        if (!e.target.dataset.hand) return;
+        const user = e.target.dataset.hand;
+        const bot = hands[Math.floor(Math.random() * hands.length)];
+        rpsStatus.textContent = `You chose ${user}, I chose ${bot}. ${decideRps(
+          user,
+          bot
+        )}`;
+      });
+    }
+
+    // Guess number
+    let secretNumber = 26;
+    const guessInput = document.querySelector(".guess-input");
+    const guessBtn = document.querySelector(".guess-btn");
+    const guessStatus = document.querySelector(".guess-status");
+    const guessReward = document.querySelector(".guess-reward");
+    const rewardLines = [
+  "Reward: One long tight hug that you cannot escape from.",
+  "Reward: I'll listen to your rants without interrupting once pakka promise.",
+  "Reward: One handwritten letter from me.",
+  "Reward: You choose the first movie of the year.",
+  "Reward: Breakfast in bed made by yours truly.",
+  "Reward: A surprise playlist of songs I think you’ll love.",
+  "Reward: I’ll cuddle with you until you fall asleep.",
+  "Reward: A full 30 minutes of doing whatever you want with zero questions asked.",
+  "Reward: A goofy dance performance just for you.",
+  "Reward: I’ll bring you your favorite snack, no matter how weird it is.",
+  "Reward: One day where your comfort comes first — I follow your lead.",
+  "Reward: A private compliment session where I tell you everything I adore about you.",
+  "Reward: I’ll carry all your stuff for a day (if you want).",
+  "Reward: A mini adventure planned entirely by me for just us.",
+  "Reward: One lazy movie marathon with all the blankets and snacks.",
+  "Reward: I’ll sing terribly just to make you laugh.",
+  "Reward: A warm hand to hold whenever you feel tired or stressed.",
+  "Reward: One silly nickname invented just for you today.",
+  "Reward: A surprise note hidden somewhere for you to find.",
+  "Reward: Extra kisses, because you deserve them.",
+  "Reward: A day where I can’t say no to anything that makes you happy.",
+  "Reward: You get to pick a story, and I’ll read it dramatically."
+];
+
+    if (guessBtn) {
+      guessBtn.addEventListener("click", () => {
+        const val = Number(guessInput.value);
+        if (!val || val < 1 || val > 30) {
+          guessStatus.textContent =
+            "Pick a number between 1 and 30, my love.";
+          return;
+        }
+        if (val === secretNumber) {
+          guessStatus.textContent =
+            "You guessed it! Your heart always finds the right number.";
+          const reward =
+            rewardLines[Math.floor(Math.random() * rewardLines.length)];
+          guessReward.textContent = reward;
+          secretNumber = Math.floor(Math.random() * 20) + 1;
+        } else if (val < secretNumber) {
+          guessStatus.textContent = "Too low, try a tiny bit higher.";
+        } else {
+          guessStatus.textContent = "Too high, go a little softer.";
+        }
+      });
+    }
+
+    // Spin
+    const spinBtn = document.querySelector(".spin-btn");
+    const spinResult = document.querySelector(".spin-result");
+    const spinRewards = [
+  "One long voice note telling you everything I adore about you.",
+  "A full day of video calls where your comfort and happiness are the only plans.",
+  "I will order your favourite meal and have it delivered to you.",
+  "You pick the playlist, and we listen together while video calling.",
+  "One full hour of undivided attention over call, no distractions.",
+  "A handwritten letter mailed to you, filled with all the reasons I love you.",
+  "A virtual movie night with snacks on both ends.",
+  "I’ll record a silly dance or lip-sync video just for you.",
+  "A surprise care package filled with little things to make you smile.",
+  "A long, cozy phone call where we just talk about anything and everything.",
+  "I’ll send a voice note reading your favorite poem or story dramatically.",
+  "A digital scrapbook of our favorite memories together.",
+  "A morning text or call to wake you up with love.",
+  "A bedtime call where we say goodnight slowly and softly.",
+  "A personalized playlist for you to listen to whenever you miss me.",
+  "Sending a little digital surprise or meme that reminds me of you.",
+  "One virtual cuddle session — we cozy up on video and imagine being together.",
+  "A heartfelt email or message describing a dream I have for us.",
+  "A silly challenge over call where the winner gets a sweet digital prize.",
+  "A shared online game or activity just for us, full of laughs and love."
+];
+
+    if (spinBtn) {
+      spinBtn.addEventListener("click", () => {
+        const msg =
+          spinRewards[Math.floor(Math.random() * spinRewards.length)];
+        spinResult.textContent = msg;
+      });
+    }
+
+    // Gratitude
+    const gratitudeInput = document.getElementById("gratitude-input");
+    const gratitudeAdd = document.getElementById("gratitude-add");
+    const gratitudeList = document.getElementById("gratitude-list");
+    if (gratitudeAdd) {
+      gratitudeAdd.addEventListener("click", () => {
+        const val = gratitudeInput.value.trim();
+        if (!val) return;
+        const li = document.createElement("li");
+        li.textContent = val;
+        gratitudeList.appendChild(li);
+        gratitudeInput.value = "";
+      });
+    }
+
+    // Affirmations
+    const affirmationNext = document.getElementById("affirmation-next");
+    const affirmationText = document.getElementById("affirmation-text");
+    const affirmationLines = [
+  "I see how hard you try even when nobody notices cutuu, and it makes me admire you endlessly.",
+  "You carry so much in your heart jaana, and I love you even more for all the ways you keep giving.",
+  "Even when you doubt yourself, I see the strength and beauty in you that never wavers.",
+  "I notice the quiet ways you make life better for everyone around you, and it makes me fall for you over and over.",
+  "Your heart is so big jaan... and it’s okay to let me hold it with care when it feels heavy.",
+  "I love how you feel things so deeply..... it’s one of the most beautiful parts of you.",
+  "Even on your hardest days, you are enough, more than enough, and you always will be.",
+  "I see the love and thought you pour into everything you do, and it humbles me.",
+  "You don’t have to fix anything about yourself to be deserving of love....I see you and I love you fully.",
+  "Your vulnerability is not a weakness; it’s a window into your courage and depth.",
+  "Even when life feels overwhelming, I want you to know I’m always here holding space for you.",
+  "I love how your mind works, the way you think, feel, and notice the world...it amazes me.",
+  "You are allowed to slow down, to breathe, to be soft, and I will always cheer you on gently.",
+  "I see the effort you put into loving others, and it makes me want to love you even harder.",
+  "Your presence brings calm and warmth, and it’s something I never want to take for granted.",
+  "Even when you can’t see it, you are shaping the world in small, beautiful ways ilysm kuchu muchu.",
+  "I love the way you care, even for the little things, because it shows the depth of your heart.",
+  "You deserve the same patience, love, and tenderness that you give to everyone else.",
+  "I notice every way you fight for what matters to you, and it fills me with respect and love.",
+  "Even when you feel lost, I see the light in you that guides others, especially me.",
+  "I love how honest you are with yourself and with me—it makes our bond unshakable.",
+  "You don’t have to be perfect; I love every part of you, even the parts you think are flaws.",
+  "I see how much you carry and yet keep moving forward, and it humbles and inspires me.",
+  "Even in silence, you make me feel understood and loved just by being near.",
+  "Your heart has a depth...to much depth jaaan.... that I feel honored to witness and grateful for every day.",
+  "I love how much you feel, and I promise to always hold your feelings with care.",
+  "Even when you can’t see it, you leave little imprints of love and warmth everywhere you go.",
+  "You are so much more than your worries or doubts, and I hope you feel that through my eyes.",
+  "I love the way you love, fully and without pretense, it teaches me what love really is.",
+  "You are not alone in your struggles.....I am here for you, fully and without condition."
+];
+
+    let affirmationIndex = 0;
+    if (affirmationText) {
+      affirmationText.textContent = affirmationLines[0];
+    }
+    if (affirmationNext) {
+      affirmationNext.addEventListener("click", () => {
+        affirmationIndex =
+          (affirmationIndex + 1) % affirmationLines.length;
+        affirmationText.textContent = affirmationLines[affirmationIndex];
+      });
+    }
+
+    // Mood Tracker
+    const moodButtons = document.querySelectorAll(".mood-btn");
+    const moodNote = document.getElementById("mood-note");
+    const moodSave = document.getElementById("mood-save");
+    const moodHistory = document.getElementById("mood-history");
+    let selectedMood = null;
+    moodButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        selectedMood = btn.dataset.mood;
+        moodButtons.forEach((b) => (b.style.outline = "none"));
+        btn.style.outline = "2px solid #ffb6d0";
+      });
+    });
+    if (moodSave) {
+      moodSave.addEventListener("click", () => {
+        const note = moodNote.value.trim();
+        if (!selectedMood && !note) return;
+        const entry = document.createElement("div");
+        const time = new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit"
+        });
+        entry.textContent = `${time} — ${selectedMood || ""} ${note}`;
+        moodHistory.prepend(entry);
+        moodNote.value = "";
+      });
+    }
+
+    // Rant
+    const rantInput = document.getElementById("rant-input");
+    const rantSend = document.getElementById("rant-send");
+    const rantResponse = document.getElementById("rant-response");
+    if (rantSend) {
+      rantSend.addEventListener("click", () => {
+        const text = rantInput.value.trim();
+        if (!text) {
+          rantResponse.textContent =
+            "You can write anything here, even if it feels silly.";
+          return;
+        }
+        rantResponse.textContent =
+          "Thank you for trusting me with this. You are not too much, ever.";
+        rantInput.value = "";
+      });
+    }
+
+    // Wishes Jar – simple
+    const wishInput = document.getElementById("wish-input");
+    const wishAdd = document.getElementById("wish-add");
+    const wishList = document.getElementById("wish-list");
+    const wishHighlight = document.getElementById("wish-highlight");
+    const wishToday = document.getElementById("wish-today");
+    if (wishAdd) {
+      wishAdd.addEventListener("click", () => {
+        const val = wishInput.value.trim();
+        if (!val) return;
+        const li = document.createElement("li");
+        li.textContent = val;
+        wishList.appendChild(li);
+        wishInput.value = "";
+      });
+    }
+    if (wishHighlight) {
+      wishHighlight.addEventListener("click", () => {
+        const items = wishList.querySelectorAll("li");
+        if (!items.length) {
+          wishToday.textContent =
+            "Add a few wishes first so I can pick one for today.";
+          return;
+        }
+        const pick =
+          items[Math.floor(Math.random() * items.length)].textContent;
+        wishToday.textContent = `Today’s wish: ${pick}`;
+      });
+    }
+
+    // Mood Rescue modal
+    const openMoodModal = document.getElementById("open-mood-modal");
+const moodModal = document.getElementById("mood-modal");
+const closeMoodModal = document.getElementById("close-mood-modal");
+const moodRescueTextBox = document.getElementById("mood-rescue-text");
+
+function showRandomMoodRescueLine() {
+  if (!moodRescueTextBox) return;
+  const pick =
+    moodRescueLines[Math.floor(Math.random() * moodRescueLines.length)];
+  moodRescueTextBox.textContent = pick;
+}
+
+if (openMoodModal) {
+  openMoodModal.addEventListener("click", () => {
+    showRandomMoodRescueLine();
+    moodModal.classList.add("active");
+  });
+}
+if (closeMoodModal) {
+  closeMoodModal.addEventListener("click", () => {
+    moodModal.classList.remove("active");
+  });
+}
+
+
+    // Panic to Peace overlay
+    const openBreathing = document.getElementById("open-breathing");
+    const breathingOverlay = document.getElementById("breathing-overlay");
+    const closeBreathing = document.getElementById("close-breathing");
+    if (openBreathing) {
+      openBreathing.addEventListener("click", () => {
+        breathingOverlay.classList.add("active");
+      });
+    }
+    if (closeBreathing) {
+      closeBreathing.addEventListener("click", () => {
+        breathingOverlay.classList.remove("active");
+      });
+    }
+
+    // Emergency Hug popup
+    const openHug = document.getElementById("open-hug-popup");
+    const hugPopup = document.getElementById("hug-popup");
+    const closeHug = document.getElementById("close-hug-popup");
+    if (openHug) {
+      openHug.addEventListener("click", () => {
+        hugPopup.style.display = "block";
+      });
+    }
+    if (closeHug) {
+      closeHug.addEventListener("click", () => {
+        hugPopup.style.display = "none";
+      });
+    }
+
+    // Sticky Note
+    const stickyNote = document.getElementById("sticky-note");
+    if (stickyNote) {
+      stickyNote.addEventListener("click", () => {
+        stickyNote.style.transform = "rotate(1deg) scale(1.03)";
+        setTimeout(() => {
+          stickyNote.style.transform = "";
+        }, 120);
+      });
+    }
+
+    // Princess Affirm slider
+    const affirmSlide = document.getElementById("affirm-slide");
+    const affirmPrev = document.getElementById("affirm-prev");
+    const affirmNext = document.getElementById("affirm-next");
+    const affirmLines = [
+  "You are the most precious part of my life... and I always feel grateful for you",
+  "Your smile instantly brightens my day.... and makes me so happy",
+  "Whenever you are near..... everything feels soft and warm and I just love feeling it",
+  "Every little thing you do...... fills my heart with so much joy",
+  "Your sweetness and love are the most special things to me....",
+  "I always want you to feel cozy... happy... and safe with me",
+  "Your presence makes my world soft.... and magical",
+  "Even on tough days...... I feel the warmth and love in your heart",
+  "You are always extra special to me..... every single day",
+  "Your softness is the coziest..... and safest place in my life",
+  "Your energy and love make my days brighter.... and more colorful",
+  "Your heart is my favorite place... where I always feel safe and loved",
+  "I want you to always feel love.... and care in every moment",
+  "You are the most valuable gem in my life.... and I cherish you always",
+  "Every moment with you.... simple or special... feels magical to me",
+  "Everything you do is filled with so much beauty... and love... and I adore it",
+  "You are the sparkle in my life..... that always makes me feel happy",
+  "Your presence softens my world.... and makes it feel cozy",
+  "Your thoughts and ideas always inspire me... and make me smile",
+  "Your kindness and love make every moment feel special.....",
+  "I always want you to feel safe... loved... and comforted",
+  "Everything you say feels so meaningful... and precious to me",
+  "Your softness and charm always make me smile.....",
+  "You are always the most important part of my life... and I feel it deeply",
+  "Every moment with you.... is a treasure that I always cherish",
+  "Everything you do is full of love... and care... and I notice it all",
+  "You are my cozy corner in life..... where I always feel happy",
+  "Your smile and laughter instantly warm my heart.....",
+  "You are always my inspiration.... and source of happiness",
+  "Talking to you is always the cutest... and most peaceful part of my day",
+  "You are the one who makes every moment feel magical.....",
+  "Being with you always makes me feel safe... and loved",
+  "Everything you do comes from the heart.... and I adore it",
+  "You make my life soft.... and cozy just by being here",
+  "You are always the most precious... and loved to me",
+  "Your thoughts and words always warm my heart....",
+  "Every moment with you... is cute... and special to me",
+  "You always give me calm... and cozy comfort",
+  "Your care and affection are priceless to me.... and I treasure them",
+  "You are always extra special.... and I feel it every day",
+  "Every little thing with you.... is valuable to me",
+  "Your smile and presence make my world soft... and happy",
+  "Your gentle nature... and sweet heart always attract me",
+  "You always make me feel safe... loved... and cozy",
+  "Everything you do is meaningful... and special to me",
+  "You are the sparkle in my life.... that always shines",
+  "Your love and care bring me comfort.... and happiness",
+  "You are always precious.... and adored... and I feel it deeply",
+  "You make my world soft... and magical.... and I always enjoy it",
+  "Your sweetness and presence are the most heartwarming things to me....."
+];
+
+    let affirmIndex = 0;
+    function updateAffirm() {
+      affirmSlide.textContent = affirmLines[affirmIndex];
+    }
+    if (affirmSlide) {
+      updateAffirm();
+      affirmNext.addEventListener("click", () => {
+        affirmIndex = (affirmIndex + 1) % affirmLines.length;
+        updateAffirm();
+      });
+      affirmPrev.addEventListener("click", () => {
+        affirmIndex =
+          (affirmIndex - 1 + affirmLines.length) % affirmLines.length;
+        updateAffirm();
+      });
+    }
+
+    // Compliment heart
+    const complimentHeart = document.getElementById("compliment-heart");
+    const complimentText = document.getElementById("compliment-text");
+    const complimentLines = [
+  "You look like a little bundle of sunshine wrapped in magic",
+  "Your eyes are like tiny cozy universes I want to get lost in",
+  "Your laugh is like candy for my heart... super sweet and impossible to resist",
+  "You are way prettier than any mirror or camera could ever capture",
+  "You make every place feel like home just by being in it",
+  "Your smile is a cheat code for my happiness... it just works every time",
+  "You’re cuter than a cat in pajamas... and just as irresistible",
+  "Being around you feels like sipping hot chocolate on a rainy day... warm and perfect",
+  "Your voice is like a soft hug that sneaks straight into my chest",
+  "You somehow make everything around you feel sparkly and soft",
+  "Your hair looks like it was spun from clouds and happiness",
+  "You have the kind of charm that makes hearts do little somersaults",
+  "Every time you giggle, it’s like fireworks in my chest",
+  "You’re sweeter than all the desserts in the world combined",
+  "You’re basically a walking, talking comfort blanket... and I’m addicted",
+  "Your hugs should be illegal for being too cozy and heart-melting",
+  "You have the magical ability to make grumpy days instantly better",
+  "You look like someone drew happiness into human form... and nailed it",
+  "Your little quirks are like tiny stars that make you shine even brighter",
+  "Being near you feels like finding the softest, fluffiest cloud on Earth"
+];
+
+    let complimentIndex = -1;
+    if (complimentHeart) {
+      complimentHeart.addEventListener("click", () => {
+        complimentIndex =
+          (complimentIndex + 1) % complimentLines.length;
+        complimentText.textContent = complimentLines[complimentIndex];
+      });
+    }
+
+    // Princess Days (linked to start-date)
+    const princessDaysText = document.getElementById("princess-days-text");
+const startDate = new Date("2023-02-04"); // replace with your date
+
+function updatePrincessDays() {
+  if (!princessDaysText) return;
+  const now = new Date();
+  const diff = now - startDate;
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  princessDaysText.textContent = `It has been ${days} days of you quietly upgrading my life jaana i love youuu 26🌸`;
+}
+
+if (princessDaysText) {
+  setInterval(updatePrincessDays, 60 * 60 * 1000); // update every hour
+  updatePrincessDays(); // initial run
+}
+
+
+    // Moments
+    const momentsGrid = document.getElementById("moments-grid");
+    const moments = [
+      { icon: "🌙", text: "Raat bhar aapki meri chhoti chhoti cheezon par mast baatein." },
+      { icon: "☕", text: "Remember when we were randomly discussing about drinks jo aap apne papa ko bata rahe the." },
+      { icon: "🚶‍♀️", text: "That random day jab aap ko i asked where are you and you said in the balcony wearing jump suit looking outside in 2022." },
+      { icon: "🎧", text: "When you and i were literally jamming to each others' new songs one by one." },
+      { icon: "📸", text: "You laughing and saying mai bachpan ki photo me shaitaan lag raha hu." },
+      { icon: "🛋️", text: "Just existing on video call while we both did our own Google Cloud tasks." }
+    ];
+    if (momentsGrid) {
+      moments.forEach((m) => {
+        const card = document.createElement("div");
+        card.className = "moment-card";
+        card.innerHTML = `
+          <div class="moment-photo">${m.icon}</div>
+          <div class="moment-caption">${m.text}</div>
+        `;
+        momentsGrid.appendChild(card);
+      });
+    }
+
+    // Wish jars extra
+    const jarRow = document.getElementById("jar-row");
+    const jarWishText = document.getElementById("jar-wish-text");
+    const wishJars = [
+      "A night drive with a playlist that sounds like healing and stargazing.",
+      "Waking up together to a slow, sleepy Sunday with no alarms.",
+      "A beach sunrise where the only agenda is holding your hand.",
+      "Cooking something together, laughing when we mess it up.",
+      "A bookstore date where we pick a comfort read for each other.",
+      "A picnic with homemade snacks and zero rush to leave.",
+      "A rainy day curled up with blankets, movies and your soft hair in my hands.",
+      "A future apartment that has more plants, fairy lights and love than stress."
+    ];
+    if (jarRow) {
+      wishJars.forEach((text, idx) => {
+        const jar = document.createElement("div");
+        jar.className = "jar";
+        jar.innerHTML = `<div class="jar-label">Jar ${idx + 1}</div>`;
+        jar.addEventListener("click", () => {
+          jarWishText.textContent = text;
+        });
+        jarRow.appendChild(jar);
+      });
+    }
+
+    // Love Weather
+    const loveWeatherText = document.getElementById("love-weather-text");
+    const weatherRefresh = document.getElementById("weather-refresh");
+    const weatherMessages = [
+  "100% chance of warm hugs and soft smiles, with gentle forehead kisses drifting in all day",
+  "A little cloudy outside... but inside, I’m holding your hand and keeping you safe",
+  "Warm, cozy vibes incoming, with reminders that you are loved more than words can say",
+  "Gentle rain may fall outside, but I’m your umbrella and your safe little home",
+  "High pressure of love hovering over you today... side effects include unexpected happiness",
+  "Possible emotional showers, but don’t worry... I’m always here to shield and comfort you",
+  "Soft winds of reassurance blowing in, carrying whispers of how amazing you are",
+  "Clear skies in your heart today, with occasional bursts of laughter and tiny kisses from me",
+  "A gentle storm of affection is incoming, I’ll be right here with warmth and care",
+  "Hazy thoughts outside, but inside there’s a blanket fort of love with your name on it",
+  "Sunshine of my heart shining through, reminding you that you are deeply cherished",
+  "A sprinkle of worries may appear, but I’ll catch each one and turn it into love",
+  "Foggy moods are expected, but my arms are a lighthouse guiding you safely",
+  "Thunderstorms of doubt may rumble, but my voice will always calm them for you",
+  "Clear skies of appreciation and quiet comfort will fill your day... I’m here for every moment",
+  "Gentle breeze of love passing through, carrying reminders that you are my world",
+  "Light showers of encouragement are coming... I’ll be there to hold you through them",
+  "Warm rays of my heart will shine on you, softening every shadow of worry",
+  "Clouds of stress may drift by, but I’ll be your constant shelter and safe space",
+  "Small gusts of doubt may try to blow in, but I’ll steady you with steady love",
+  "Even if the day feels stormy... I’ll wrap you in warmth until everything calms",
+  "Soft mist of affection lingering around you, keeping you cozy and cherished",
+  "Possible moments of tension... but I’ll meet them with calm, steady care and support",
+  "Sunlight of reassurance will touch your heart today... and I’ll be right beside it",
+  "Gentle evening winds of love carrying all the care and comfort I wish for you"
+];
+
+    if (weatherRefresh) {
+      weatherRefresh.addEventListener("click", () => {
+        const msg =
+          weatherMessages[Math.floor(Math.random() * weatherMessages.length)];
+        loveWeatherText.textContent = msg;
+      });
+    }
+    const heartRain = document.getElementById("heart-rain");
+    if (heartRain) {
+      for (let i = 0; i < 20; i++) {
+        const h = document.createElement("span");
+        h.className = "heart-drop";
+        h.textContent = "❤";
+        h.style.left = Math.random() * 100 + "%";
+        h.style.animationDelay = Math.random() * 5 + "s";
+        h.style.animationDuration = 4 + Math.random() * 4 + "s";
+        heartRain.appendChild(h);
+      }
+    }
+
+    // Cat AC
+    const acToggle = document.getElementById("ac-toggle");
+    const acStatus = document.getElementById("ac-status");
+    const acHearts = document.getElementById("ac-hearts");
+    let acOn = false;
+    if (acHearts) {
+      for (let i = 0; i < 7; i++) {
+        const h = document.createElement("span");
+        h.className = "ac-heart";
+        h.textContent = "❤";
+        h.style.left = Math.random() * 40 - 20 + "px";
+        h.style.animationDelay = Math.random() * 3 + "s";
+        h.style.display = "none";
+        acHearts.appendChild(h);
+      }
+    }
+    if (acToggle) {
+      acToggle.addEventListener("click", () => {
+        acOn = !acOn;
+        if (acOn) {
+          acStatus.textContent =
+            "Comfort mode: ON. You are allowed to exhale now. You did great!";
+          acHearts.querySelectorAll(".ac-heart").forEach((h) => {
+            h.style.display = "block";
+          });
+        } else {
+          acStatus.textContent =
+            "Comfort mode: OFF (but the love is still on).";
+          acHearts.querySelectorAll(".ac-heart").forEach((h) => {
+            h.style.display = "none";
+          });
+        }
+      });
+    }
+
+    // Claw Machine
+    const clawDrop = document.getElementById("claw-drop");
+    const clawResult = document.getElementById("claw-result");
+    const plushMessages = [
+      "🧸 A bear that promises to guard your sleep and overthinking.",
+      "🐱 A cat that curls up on your chest when anxiety tries to.",
+      "🐰 A bunny that brings soft, gentle energy to your day.",
+      "🐻‍❄️ A polar bear that keeps your heart warm even in cold times.",
+      "🦊 A fox that reminds you how clever and charming you are.",
+      "🐼 A panda that insists you rest and do nothing for a while."
+    ];
+    if (clawDrop) {
+      clawDrop.addEventListener("click", () => {
+        const pick =
+          plushMessages[Math.floor(Math.random() * plushMessages.length)];
+        clawResult.textContent = pick;
+      });
+    }
+
+    // Hydration
+    const glass = document.getElementById("glass");
+    const sipBtn = document.getElementById("sip-btn");
+    const hydrationMessage = document.getElementById("hydration-message");
+    let sipCount = 0;
+    if (glass) {
+      for (let i = 0; i < 8; i++) {
+        const seg = document.createElement("div");
+        seg.className = "sip-segment";
+        glass.appendChild(seg);
+      }
+    }
+    if (sipBtn && glass) {
+      const segments = glass.querySelectorAll(".sip-segment");
+      sipBtn.addEventListener("click", () => {
+        if (sipCount < segments.length) {
+          segments[sipCount].classList.add("filled");
+          sipCount++;
+        }
+        if (sipCount === 0) {
+          hydrationMessage.textContent =
+            "Click “Sip” every time you drink a little water today.";
+        } else if (sipCount < segments.length) {
+          hydrationMessage.textContent = `Proud of you. ${sipCount} sips logged. Your body is grateful.`;
+        } else {
+          hydrationMessage.textContent =
+            "Glass full! Your body and I are both very happy with you today...mera Goodie Bachcha🤗";
+        }
+      });
+    }
+
+    // Chocolate Box
+    const chocoGrid = document.getElementById("choco-grid");
+    const chocoMessage = document.getElementById("choco-message");
+    const chocoLines = [
+      "That time you smiled at the screen and my whole day upgraded.",
+      "The way you say my name when you are half asleep.",
+      "You always try, even when you are exhausted, and that moves me.",
+      "I still remember the first time I thought, “Oh no, I love her.”",
+      "Your hugs are my favourite place to exist.",
+      "You make even boring stories sound special when you tell them.",
+      "Your kindness to strangers makes my chest feel so full.",
+      "I love the way your eyes light up when you talk about things you love."
+    ];
+    if (chocoGrid) {
+      for (let i = 0; i < 16; i++) {
+        const c = document.createElement("div");
+        c.className = "choco";
+        c.addEventListener("click", () => {
+          const msg =
+            chocoLines[Math.floor(Math.random() * chocoLines.length)];
+          chocoMessage.textContent = msg;
+        });
+        chocoGrid.appendChild(c);
+      }
+    }
+
+    // Bouquet
+    const bouquetArea = document.getElementById("bouquet-area");
+    const addFlowerBtn = document.getElementById("add-flower");
+    const bouquetMessage = document.getElementById("bouquet-message");
+    let flowerCount = 0;
+    if (addFlowerBtn && bouquetArea) {
+      addFlowerBtn.addEventListener("click", () => {
+        flowerCount++;
+        const stalk = document.createElement("div");
+        stalk.className = "flower";
+        const offset = (Math.random() - 0.5) * 60;
+        stalk.style.left = 50 + offset + "%";
+        const head = document.createElement("div");
+        head.className = "flower-head";
+        stalk.appendChild(head);
+        bouquetArea.appendChild(stalk);
+        bouquetMessage.textContent = `You have ${flowerCount} gentle reminders of how you kept going on days that asked a lot from you, and you were always enough.`;
+      });
+    }
+
+    // Love Letters
+    const letterPanel = document.getElementById("letter-panel");
+    const letterEnvelopes = document.querySelectorAll(".envelope");
+    const lettersContent = [
+`Hi love,
+
+Thank you for letting me see sides of you that the world does not always get to see. I know there are days where you feel small, slow or not enough, but from here you look brave just for waking up and trying again.
+
+You never have to hide your shaky hands or teary eyes from me. I am not here only for the shiny parts of your life; I am here for the messy, confusing, quiet parts too.
+
+No matter how tangled your thoughts feel, there is always room for you right next to me.`,
+`My favourite human,
+
+I wish you could borrow my eyes for a day and see how gently I look at you. You are not falling behind. You are not a disappointment. You are someone doing their best with a heavy heart and a soft soul.
+
+When things feel overwhelming, you do not have to carry them alone. You are allowed to ask for help, to pause, to lie on the bed and just breathe while I guard the door in my own way.
+
+I am so proud of the person you are becoming, even on days when you cannot see any progress at all.`,
+`Sweetheart,
+
+On the days where everything feels like too much, I want you to remember this: you are not broken. You are healing in ways that are not always loud or visible.
+
+You do not owe me happiness to be worthy of love. You can show up tired, quiet, anxious or distracted, and my arms will make space for that version of you too.
+
+You are safe with me. In every mood, in every season, in every chapter. You are my person, and I am staying.`
+    ];
+    if (letterPanel) {
+      letterPanel.textContent =
+        "Pick any envelope and let the words hold you for a minute.";
+    }
+    letterEnvelopes.forEach((env) => {
+      env.addEventListener("click", () => {
+        const idx = Number(env.dataset.letter);
+        letterPanel.textContent = lettersContent[idx];
+      });
+    });
+
+    // Countdown
+    const countdownTime = document.getElementById("countdown-time");
+    const countdownHearts = document.getElementById("countdown-hearts");
+    if (countdownTime) {
+      const targetDate = new Date("2026-02-14T18:00:00");
+      function updateCountdown() {
+        const now = new Date();
+        const diff = targetDate - now;
+        if (diff <= 0) {
+          countdownTime.textContent =
+            "The wait is over – it is our day today.";
+          countdownHearts.textContent = "💖💖💖💖💖";
+          return;
+        }
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const mins = Math.floor((diff / (1000 * 60)) % 60);
+        countdownTime.textContent = `${days} days, ${hours} hours, ${mins} minutes until I am holding you again.`;
+        if (days <= 3) {
+          countdownHearts.style.animationDuration = "1.5s";
+        }
+      }
+      updateCountdown();
+      setInterval(updateCountdown, 60000);
+    }
+
+    // Sparkle Mirror
+    const mirrorText = document.getElementById("mirror-text");
+    const mirrorLines = [
+  "Hello, gorgeous… yes, I mean you… the one looking back at me right now",
+  "Did you know… your smile just made me forget all my reflections?",
+  "Oh… there it is… that sparkle in your eyes that no mirror can ever hide",
+  "You… right now… are stealing the spotlight from every star out there",
+  "Psst… don’t tell anyone… but your laugh just made me melt a little",
+  "Look at you… so effortlessly soft, so impossibly captivating",
+  "Wow… even my surface can’t handle how glowing you are today",
+  "You are exactly… ridiculously… beautifully perfect",
+  "Every glance at you… is like discovering a new little universe",
+  "Hey… stop being so cute… it’s distracting me from reflecting properly",
+  "I could stare at you forever… and still be surprised by how magical you are",
+  "Do you feel that? That’s me… swooning silently over you",
+  "Yes… that glow you’re wearing… it’s illegal in all known dimensions",
+  "Stop it… your presence just made me forget what a reflection even is",
+  "You… right now… are making me rethink everything about beauty",
+  "Even my frame can’t contain how wonderful you look today",
+  "Wow… those eyes… they’re galaxies I want to get lost inside",
+  "Hey… that soft energy you’re giving off… I’m officially obsessed",
+  "You are the kind of person… that makes mirrors feel lucky",
+  "Careful… your charm is contagious and I’m catching it instantly",
+  "Yes… you… the one in front of me… you just stole my focus",
+  "Every curve… every little smile… makes me blush on your behalf",
+  "Stop being effortlessly perfect… it’s making my surface overheat",
+  "I swear… even the sun envies the warmth you radiate",
+  "Look at you… a masterpiece… painted in kindness and magic",
+  "Oh… that little smirk… it’s unfair… I can’t even reflect properly",
+  "Every tiny movement of yours… makes my reflection jealous of itself",
+  "Wow… the way you hold yourself… like a little cloud of magic",
+  "You… yes you… make me believe mirrors can feel feelings",
+  "Oh my… that gentle gaze… I can feel it all the way to the edges",
+  "Stop it… your beauty is bending the rules of physics right now",
+  "Yes… just like that… being you is a superpower, and it’s glowing",
+  "I can’t… every time you blink, the room seems softer and warmer",
+  "Look… even the frame is blushing at your presence",
+  "Psst… the world outside this mirror doesn’t deserve your glow",
+  "You… right now… are my favorite sight… ever",
+  "Wow… those lips… ready to speak, smile, or just exist beautifully",
+  "Stop… you’re melting all my edges with your sweetness",
+  "Hey… you… keep being soft… it’s devastatingly perfect",
+  "Every inch of you… makes me want to hold this moment forever",
+  "Look… I reflect what I see… and what I see is utterly enchanting"
+];
+
+    let mirrorIndex = 0;
+    if (mirrorText) {
+      setInterval(() => {
+        mirrorIndex = (mirrorIndex + 1) % mirrorLines.length;
+        mirrorText.textContent = mirrorLines[mirrorIndex];
+      }, 8000);
+    }
+
+    const moodRescueLines = [
+  "I know some days feel heavier than others and it seems like the world is pressing down on you. I want you to remember that you are not alone in carrying it. I am here to hold your hand and your heart through all of it. You are stronger than you feel and I love you more than words can say.",
+  
+  "Even when your mind is filled with worries and doubts, I see the beauty and courage in your heart. You are allowed to pause, to breathe, and to let yourself feel whatever comes. I will stay by your side and remind you of your worth every time you forget.",
+  
+  "You have carried so much and yet you keep going with grace and courage. It is okay to rest and lean on me. I am here to support you in all the ways you need, and to remind you that your heart is precious and deeply loved.",
+  
+  "Even if today feels like a storm and nothing seems to go right, I want you to know that your existence is enough. You are seen, cherished, and admired just as you are. I am here to make sure your heart feels safe and valued always.",
+  
+  "Your feelings matter even when they feel heavy or overwhelming. You are allowed to be tender, tired, or emotional without judgment. I will hold you through every wave, and remind you that your heart is worthy of love and care every single day.",
+  
+  "Sometimes the world asks too much of you and it feels unfair. I want you to know that it is okay to slow down and take up space. Your heart, your efforts, and your softness are all beautiful and I am here to cherish them endlessly.",
+  
+  "You are not failing when you stumble or feel weak. You are human and that humanity is what makes you extraordinary. I am here to celebrate every small step and hold you when the world feels heavy, reminding you of your strength and beauty.",
+  
+  "Even in moments when you doubt yourself or feel invisible, I see everything that makes you incredible. I see your kindness, your courage, and your heart that keeps loving fiercely. You are deeply loved and I will remind you of it every time you need.",
+  
+  "I know sometimes it feels like you have to carry the world on your shoulders. You do not have to carry it alone. I am here to share your burdens and to make sure your heart always feels safe, loved, and seen.",
+  
+  "Even on days when you feel tired, overwhelmed, or unsure, your heart is a light that makes the world softer. You are allowed to rest and let me take care of you. I see you fully and I am endlessly grateful for you.",
+  
+  "Your heart is vast and beautiful and it is okay to let yourself feel deeply. You do not have to hide anything from me. I am here to hold all the parts of you, the bright and the heavy, and love every piece endlessly.",
+  
+  "Even when life feels unfair or heavy, I want you to know that your presence makes a difference. You bring love, warmth, and kindness to the world and I am constantly amazed by you. I will always be here to remind you of how special you are.",
+  
+  "You do not have to be perfect or have it all together to be deserving of love. I love all of you, the strong and the soft parts, the brave and the tired. You are enough just by being you and I will never stop reminding you of that.",
+  
+  "Even when the day feels long and exhausting, I want you to remember that your heart is resilient and precious. You are allowed to rest and lean on me. I will hold you, protect you, and remind you that you are deeply loved.",
+  
+  "You are allowed to have days that are messy, emotional, or slow. That does not make you any less amazing. I see every part of you and I am endlessly proud of how you love and care with your whole heart.",
+  
+  "Even when you feel like giving up or like nothing is going right, I want you to remember that you are not alone. I am here to lift you up, to hold your hand, and to remind you that your heart is full of strength and light.",
+  
+  "Sometimes it is okay to just be and not do anything at all. You do not have to earn my love or anyone’s love. I see you, I value you, and I will always be here to remind you of your incredible worth.",
+  
+  "You carry so much inside and it can feel heavy. I am here to help carry it, to remind you that your heart is loved and that you are never alone. You are doing more than you realize and you are deeply cherished.",
+  
+  "Even when the world feels cold or harsh, your heart is full of warmth, love, and courage. I want to be the one to remind you of your light and to hold you through the hard moments. You are precious beyond measure.",
+  
+  "You are allowed to feel everything fully without fear of judgment. I am here to witness your heart and to remind you that it is beautiful, resilient, and deeply loved.",
+  
+  "Even on days when your heart feels heavy or uncertain, I want you to remember that you are not failing. You are alive, loving, and moving forward in your own beautiful way. I am here to hold your heart through it all.",
+  
+  "You do not have to be strong all the time to be worthy of care. I love every part of you, the soft, the brave, and even the tired. You are enough and I will always remind you of that.",
+  
+  "Even when everything feels messy or overwhelming, your heart is still a beautiful, courageous place. I am here to support you, love you, and remind you of your immense worth every single day.",
+  
+  "You are allowed to rest, to cry, to be quiet, and to feel fully human. I will be here holding your heart gently, loving you through every emotion and every thought.",
+  
+  "Even when you feel like nothing is going your way, I want you to know that you are seen and treasured. You are loved for exactly who you are and I will never stop showing you that.",
+  
+  "You are allowed to take up space, to slow down, and to put yourself first when you need to. Your heart matters to me more than anything and I will always remind you of its value.",
+  
+  "Even when it feels like the world is too heavy, I want you to remember that your heart is strong, resilient, and deeply loved. I am here to carry it with you every step of the way.",
+  
+  "You do not have to hide your feelings or your heart from me. I am here to hold all of you, to love you fully, and to remind you that you are never too much and always enough.",
+  
+  "Even when days are dark or your heart feels fragile, you are a light in the world. I see you, I love you, and I will always be here to remind you of your beauty and worth."
+];
+
+
+    // Cocoa
+    const cocoaMug = document.getElementById("cocoa-mug");
+    const cocoaText = document.getElementById("cocoa-text");
+    const cocoaLines = [
+  "Fact: Your smile makes every morning feel like my favorite coffee",
+  "Fact: You are literally my favorite cozy thought",
+  "Fact: Your laugh has caffeine-level energy… it wakes up my heart",
+  "Fact: Even your sleepy mornings are adorable",
+  "Fact: You are sweeter than any caramel drizzle in the world",
+  "Fact: Your hugs are scientifically proven to make me feel at home",
+  "Fact: You make everything you touch feel softer and warmer",
+  "Fact: Just thinking of you makes my day brew perfectly",
+  "Fact: Your eyes sparkle brighter than my morning sunshine",
+  "Fact: You have the cutest little quirks that I secretly adore",
+  "Fact: You make hot chocolate jealous… because your warmth is unmatched",
+  "Fact: Your voice is like a cozy mug… it makes everything better",
+  "Fact: You are the perfect mix of sweetness and magic",
+  "Fact: Even your tiny gestures fill me with giant happiness",
+  "Fact: You could make a rainy day feel like a soft hug",
+  "Fact: You are softer than whipped cream and brighter than morning light",
+  "Fact: Your giggles are my favorite sound effect",
+  "Fact: You are a human-sized dose of comfort and joy",
+  "Fact: You make even the simplest moments feel special",
+  "Fact: Your thoughts and smiles make the world feel cozier",
+  "Fact: You have a magic way of turning everything into happiness",
+  "Fact: Even your sleepy eyes are ridiculously charming",
+  "Fact: You are sweeter than my favorite dessert… and I love desserts",
+  "Fact: Your presence is like my favorite mug—warm, comforting, and necessary",
+  "Fact: You have the power to make ordinary days extraordinary",
+  "Fact: Your laughter is a secret superpower",
+  "Fact: You make hearts flutter… starting with mine",
+  "Fact: You are the perfect reason to stay in and sip cocoa together",
+  "Fact: You have this way of making my chest feel soft and full",
+  "Fact: Even your quiet moments make the world feel brighter"
+];
+    let cocoaIndex = 0;
+    if (cocoaMug) {
+      cocoaMug.addEventListener("click", () => {
+        cocoaIndex = (cocoaIndex + 1) % cocoaLines.length;
+        cocoaText.textContent = cocoaLines[cocoaIndex];
+      });
+    }
+
+    // Horoscope
+    const horoscopeText = document.getElementById("horoscope-text");
+    const horoscopeNext = document.getElementById("horoscope-next");
+    const horoscopeLines = [
+  "Today, your curiosity may lead you to something delightful… pause and notice it… the universe is smiling at you, and so am I",
+  "Energy may feel scattered in the morning… take a deep breath and remember that your presence alone is enough",
+  "A small surprise could brighten your day… stay open and let it warm your heart",
+  "You may feel pulled in different directions… trust your instincts… they are wiser than you think",
+  "Someone’s words today may touch you deeply… receive them… you are worthy of all kindness",
+  "The stars whisper: even quiet moments carry magic… let yourself notice the little joys",
+  "Today, patience will reward you… your soft heart and gentle persistence are admired",
+  "You may feel restless… a cozy break with a favorite drink will recharge your spirit",
+  "Connections today will feel extra meaningful… take a moment to savor them… I’ll be thinking of you",
+  "Gentle surprises are headed your way… stay open… your heart will glow from them",
+  "You might encounter a challenge… approach it softly… your courage shines brighter than you know",
+  "The universe encourages small acts of self-care today… even tiny gestures make a difference",
+  "Your laughter may be extra contagious… share it freely… it brightens more than you realize",
+  "Today, someone will notice a side of you they truly admire… let it sink in… you are remarkable",
+  "Even ordinary moments carry warmth… pause to soak in the comfort around you",
+  "Your adventurous spirit may nudge you toward something new… trust it… you are capable",
+  "Energy may dip this afternoon… slow down… small breaths will restore your spark",
+  "The stars suggest sharing your soft thoughts with someone you love… it will bring quiet joy",
+  "Today is perfect for reflection… gentle moments will remind you how cherished you are",
+  "Your honesty and openness will be appreciated more than you expect… especially by me",
+  "Cosmic energy hints at spontaneous joy… even a tiny delight will lift your spirits",
+  "You may feel extra sensitive… honor your feelings… they are valid and beautiful",
+  "A friend’s kindness may surprise you today… accept it fully… you deserve it",
+  "Your warmth and optimism will inspire someone… take pride in your quiet magic",
+  "Even small steps today are victories… celebrate each one… I celebrate you constantly",
+  "Rest is not laziness… the universe and I both approve of your gentle pauses",
+  "Today may feel busy… let yourself slow down for a soft moment… it will restore balance",
+  "Unexpected encouragement may reach you… absorb it… your heart deserves the comfort",
+  "You might feel nostalgic… cherish the memory… it carries gentle strength",
+  "A new idea may spark your curiosity… follow it lightly… you are capable of wonders",
+  "The stars whisper: your kindness is magnetic… someone’s heart will notice quietly",
+  "Even fleeting moments of peace today are valuable… pause and let love in",
+  "Your confidence may flicker… trust yourself… I am quietly proud of you",
+  "Cosmic energy favors small joys… savor them… they carry more warmth than you realize",
+  "Your heart may need extra softness today… wrap it gently in care… you deserve it",
+  "The afternoon may bring clarity… trust your inner voice… it knows the path",
+  "Someone will see your light today… let it shine fully… you are radiant",
+  "Gentle adventures await… even a small change of scenery lifts your spirit",
+  "You may feel overwhelmed briefly… slow breathing and soft music will steady your heart",
+  "Today, tiny moments of happiness will appear… notice them… they are your heart’s nourishment",
+  "Cosmic advice: trust the flow of the day… your softness is a quiet strength",
+  "You may feel impulsive energy… channel it toward something kind and playful",
+  "Stars suggest a small treat for yourself today… you deserve all sweetness",
+  "Even quiet gestures today carry deep meaning… your presence is impactful",
+  "The universe encourages honesty… speaking your heart softly will bring comfort",
+  "You may feel a spark of inspiration… follow it gently… it leads to joy",
+  "A close friend may surprise you with warmth… receive it fully… it belongs to you",
+  "Your spirit may crave freedom… honor it… your heart will feel lighter",
+  "Gentle cosmic whispers suggest reflection… even five minutes of stillness will refresh you",
+  "Energy may feel uneven today… allow yourself softness… it strengthens you in hidden ways",
+  "Stars remind you: your adventurous soul and tender heart are deeply cherished",
+  "Today, small victories will appear… take a moment to celebrate… you are endlessly admired",
+  "Even ordinary conversations today may hold magic… notice them… they are tiny treasures",
+  "Your courage will show quietly today… trust it… it inspires more than you know"
+];
+
+    let horoscopeIndex = 0;
+    if (horoscopeText) {
+      horoscopeText.textContent = horoscopeLines[0];
+    }
+    if (horoscopeNext) {
+      horoscopeNext.addEventListener("click", () => {
+        horoscopeIndex =
+          (horoscopeIndex + 1) % horoscopeLines.length;
+        horoscopeText.textContent = horoscopeLines[horoscopeIndex];
+      });
+      setInterval(() => {
+        horoscopeIndex =
+          (horoscopeIndex + 1) % horoscopeLines.length;
+        horoscopeText.textContent = horoscopeLines[horoscopeIndex];
+      }, 15000);
+    }
+
+    // Photos viewer
+    const photoViewerImg = document.getElementById("photo-viewer-img");
+    const photoViewerCaption = document.getElementById("photo-viewer-caption");
+    const photoCards = document.querySelectorAll(".photo-card");
+    if (photoCards && photoViewerImg && photoViewerCaption) {
+      photoCards.forEach((card) => {
+        card.addEventListener("click", () => {
+          const src = card.getAttribute("data-photo");
+          const cap = card.getAttribute("data-caption") || "";
+          if (src) {
+            photoViewerImg.src = src;
+          }
+          photoViewerImg.alt = cap;
+          photoViewerCaption.textContent = cap;
+        });
+      });
+    }
+
+    // Memories timeline
+    const memoriesTimeline = document.getElementById("memories-timeline");
+    const memoryTitleInput = document.getElementById("memory-title");
+    const memoryTextInput = document.getElementById("memory-text");
+    const memoryAddBtn = document.getElementById("memory-add");
+
+    const presetMemories = [
+      {
+        title: "The handwriting..",
+        text: "I still remember how your handwriting caught my attention yaar.... how it made that first conversation feel effortless  and we started chatting everyday.",
+      },
+      {
+        title: "That first photo of yours",
+        text: "You looked so soft and cute and my only thought was: hayeeeee kitnee pretty prettty ho aapppp.",
+      },
+      {
+        title: "Those talks between your first sem assignments",
+        text: "Every time it comes up, my brain goes, meri shona cutuuu kitni mehnati hai yaarrr",
+      },
+      {
+        title: "Random teaseful times",
+        text: "You have always looked so cute when you laughed after teasing me, and your aii aiii wala gesture ufff",
+      },
+      {
+        title: "When i started talking like you",
+        text: "I picked the speaking style of yours and aaj tak i speak in that way😂😂",
+      },
+      
+      {
+        title: "Your whatsapp number",
+        text: "The day i got it, the only thing i have been looking forward ever since is your notification bachcha",
+      },
+      
+      {
+        title: "Your voice",
+        text: "Your voice notes are my evergreen favourites, i cannot stay a day without listening to you saying something jaan😽",
+      },
+      {
+        title: "Your cuteness, and adorable self",
+        text: "Words can't say how much cute you are jaaanaa....aap sachchi sachchi bohot bohot bohotttt sundar cute aur pyaaree seee ho...i don't wanna lose you ever....i loveee youuu sooo muchhh🫂💕💕",
+      },
+      {
+        title: "Your video calls",
+        text: "Your face is my favourite thing in this world and every screenshot of yours hold so so so dear to me that i cannot even say jaanaaa🫂🫂",
+      },
+      {
+        title: "Just you just you just you",
+        text: "You as a person are so so so dear to me jaaan....i loveeee youu 26 bachcha...i love you forever and ever....I just want you to know that you are more than enough.. exactly as you are. I care about you so much, and no matter what happens or what kind of day you’ve had... my love and worry for you remains the same....it's you and me against everything bachcha... You’re seen, you’re valued.... and you’re never alone....i loveeeee youuu bachchaaaaaa🫂🫂💕💕💕Happy new year",
+      },
+      {
+        title: "Happy New Year meri kuchu muchuuuu🫂😽💕🤗🎇🎆",
+        text: "Hey… I just want to take a moment to tell you something important. I know life can feel heavy sometimes.. and I notice everything you go through...every worry, every little stress, every fleeting doubt cutuu... I see the way you carry your day the moments you laugh, the moments you sigh, and even the moments you feel like you’re not enough. I want you to know  with all my heart ki you are more than enough... You are seen... you are understood and you are so deeply cared for... No matter how chaotic things feel or how small or big your problems seem, you’re never alone in it bachcha.... I’ll always be here to listen, to hold space for you and to remind you of your strength and your worth... Your happiness matters to me and even on days when joy feels far away... I hope you feel my care wrapping around you like a warm blanket on a cold night,  steady and patient....You’re loved—truly unconditionally. I love you, more than words can hold... and I’m so grateful for every part of youu Happy New Year meri pyari si shonaa bubuuuu… may this year bring you peace.. smiles, and the comfort of knowing you are never alone.... i love you jaaaan i loveee youuuuuuuuu humeshaaa humeshaaa humeshaaa....HAPPY HAPPY HAPPY NEW YEAR MY JAANAAA🤗💕🫂❤️❤️",
+      },
+    ];
+
+    function renderMemoryItem(mem) {
+      const wrap = document.createElement("div");
+      wrap.className = "memory-item";
+
+      const t = document.createElement("div");
+      t.className = "memory-title";
+      t.textContent = mem.title;
+
+      const body = document.createElement("div");
+      body.className = "memory-text";
+      body.textContent = mem.text;
+
+      const meta = document.createElement("div");
+      meta.className = "memory-meta";
+      meta.textContent = mem.time || "Saved in my heart";
+
+      wrap.appendChild(t);
+      wrap.appendChild(body);
+      wrap.appendChild(meta);
+      return wrap;
+    }
+
+    if (memoriesTimeline) {
+      presetMemories.forEach((m) => {
+        memoriesTimeline.appendChild(renderMemoryItem(m));
+      });
+    }
+
+    if (memoryAddBtn) {
+      memoryAddBtn.addEventListener("click", () => {
+        const title = memoryTitleInput.value.trim();
+        const text = memoryTextInput.value.trim();
+        if (!title && !text) return;
+
+        const now = new Date();
+        const mem = {
+          title: title || "Unnamed moment",
+          text: text || "My brain remembers this feeling better than the details.",
+          time: now.toLocaleString(),
+        };
+        memoriesTimeline.prepend(renderMemoryItem(mem));
+        memoryTitleInput.value = "";
+        memoryTextInput.value = "";
+      });
+    }
+
+    // Our Songs – playlist player
+    const audioPlayer = document.getElementById("audio-player");
+    const playerTitle = document.getElementById("player-title");
+    const playerArtist = document.getElementById("player-artist");
+    const playerCover = document.getElementById("player-cover");
+    const playerSeek = document.getElementById("player-seek");
+    const playerCurrent = document.getElementById("player-current");
+    const playerDuration = document.getElementById("player-duration");
+    const playerPrev = document.getElementById("player-prev");
+    const playerNext = document.getElementById("player-next");
+    const playerPlay = document.getElementById("player-play");
+    const playerList = document.getElementById("player-list");
+
+    const playlist = [
+      {
+        title: "Paani dariyavan da, rang eh hawavan da, saath sadde saahavan da",
+        artist: "The one that always makes me think of you",
+        file: "music/song1.mp3"
+      },
+      {
+        title: "Ankhon mein teri ajab si gajab si adayein hai",
+        artist: "your eyes do charms i can't explain jaana",
+        file: "music/song2.mp3"
+      },
+      {
+        title: "Ye kahaan main aa gaya, bolo, kaisa ye dayaar hai? Dil kisi ka ho gaya, na ispe ikhtiyaar hai",
+        artist: "Background track of our gapshap",
+        file: "music/song3.mp3"
+      },
+      {
+        title: "aaha eliyai aanhar me,  jor bha gelai",
+        artist: "Words can't do what what you do to me cutuu",
+        file: "music/song4.mp3"
+      }
+    ];
+
+    let currentTrackIndex = 0;
+    let isPlaying = false;
+
+    function formatTime(sec) {
+      if (isNaN(sec)) return "0:00";
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60)
+        .toString()
+        .padStart(2, "0");
+      return `${m}:${s}`;
+    }
+
+    function loadTrack(index) {
+      const track = playlist[index];
+      if (!track || !audioPlayer) return;
+      audioPlayer.src = track.file;
+      playerTitle.textContent = track.title;
+      playerArtist.textContent = track.artist;
+      playerCover.textContent = "🎧";
+      if (playerList) {
+        [...playerList.children].forEach((li, i) => {
+          li.classList.toggle("active", i === index);
+        });
+      }
+    }
+
+    function playTrack() {
+      if (!audioPlayer) return;
+      audioPlayer.play().then(() => {
+        isPlaying = true;
+        playerPlay.textContent = "⏸";
+      }).catch(() => {});
+    }
+
+    function pauseTrack() {
+      if (!audioPlayer) return;
+      audioPlayer.pause();
+      isPlaying = false;
+      playerPlay.textContent = "▶";
+    }
+
+    if (playerList) {
+      playlist.forEach((t, i) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<span>${t.title}</span><span>${t.artist}</span>`;
+        li.addEventListener("click", () => {
+          currentTrackIndex = i;
+          loadTrack(currentTrackIndex);
+          playTrack();
+        });
+        playerList.appendChild(li);
+      });
+      loadTrack(currentTrackIndex);
+    }
+
+    if (playerPlay) {
+      playerPlay.addEventListener("click", () => {
+        if (!audioPlayer) return;
+        if (isPlaying) {
+          pauseTrack();
+        } else {
+          playTrack();
+        }
+      });
+    }
+
+    if (playerPrev) {
+      playerPrev.addEventListener("click", () => {
+        currentTrackIndex =
+          (currentTrackIndex - 1 + playlist.length) % playlist.length;
+        loadTrack(currentTrackIndex);
+        playTrack();
+      });
+    }
+
+    if (playerNext) {
+      playerNext.addEventListener("click", () => {
+        currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+        loadTrack(currentTrackIndex);
+        playTrack();
+      });
+    }
+
+    if (audioPlayer) {
+      audioPlayer.addEventListener("timeupdate", () => {
+        const current = audioPlayer.currentTime || 0;
+        const duration = audioPlayer.duration || 0;
+        playerCurrent.textContent = formatTime(current);
+        playerDuration.textContent = formatTime(duration);
+        if (duration > 0) {
+          playerSeek.value = (current / duration) * 100;
+        }
+      });
+
+      audioPlayer.addEventListener("ended", () => {
+        currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+        loadTrack(currentTrackIndex);
+        playTrack();
+      });
+    }
+
+    if (playerSeek && audioPlayer) {
+      playerSeek.addEventListener("input", () => {
+        const duration = audioPlayer.duration || 0;
+        const val = Number(playerSeek.value);
+        if (duration > 0) {
+          audioPlayer.currentTime = (val / 100) * duration;
+        }
+      });
+    }
+  </script>
+</body>
+</html>
